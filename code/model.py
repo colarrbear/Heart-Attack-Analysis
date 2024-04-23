@@ -11,11 +11,20 @@ class HeartDiseaseModel:
     def load_data(self):
         self.data = pd.read_csv('heart.csv')
 
-    def summary_statistics(self):
-        return self.data.describe()
+    # def summary_statistics(self):
+    #     return self.data.describe()
+    #
+    # def correlations(self):
+    #     return self.data.corr()
 
-    def correlations(self):
-        return self.data.corr()
+    def summary_statistics(self):
+        summary_stats = self.data.describe()
+        return summary_stats.to_string()
+
+    def calculate_correlations(self):
+        # Example correlations, replace with actual calculations
+        correlations = self.data.corr()
+        return correlations.to_string()
 
     def filter_data(self, filters):
         filtered_data = self.data.copy()
