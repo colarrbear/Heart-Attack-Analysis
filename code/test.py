@@ -1,3 +1,4 @@
+# archive: for consider later
 import customtkinter
 
 # Define a variable to keep track of the current appearance mode

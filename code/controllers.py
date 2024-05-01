@@ -36,6 +36,7 @@ from view import HeartDiseaseView
 
 
 class HeartDiseaseController:
+    """to connect the model and view"""
     def __init__(self):
         self.model = HeartDiseaseModel()
         self.view = HeartDiseaseView(self)
