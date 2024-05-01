@@ -1,6 +1,7 @@
 """holds the data and calculations"""
 
 import pandas as pd
+import tkinter as tk
 
 
 class HeartDiseaseModel:
@@ -35,3 +36,23 @@ class HeartDiseaseModel:
             filtered_data = filtered_data[filtered_data[column] == value]
         return filtered_data
 
+
+class Toast(tk.Toplevel):
+    def __init__(self, parent, message, duration=2000):
+        tk.Toplevel.__init__(self, parent)
+        self.overrideredirect(True)
+        self.attributes("-topmost", True)
+        self.withdraw()
+        self.parent = parent
+        self.message = message
+        self.duration = duration
+        self.label = tk.Label(self, text=self.message, bg="black", fg="white", padx=10, pady=5)
+        self.label.pack()
+        self.update_idletasks()
+        self.width = self.winfo_width()
+        self.height = self.winfo_height()
+        self.x = self.parent.winfo_x() + (self.parent.winfo_width() // 2) - (self.width // 2)
+        self.y = self.parent.winfo_y() + self.parent.winfo_height() - self.height - 20
+        self.geometry("+{}+{}".format(self.x, self.y))
+        self.after(self.duration, self.destroy)
+        self.deiconify()
