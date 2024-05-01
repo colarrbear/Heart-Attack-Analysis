@@ -9,6 +9,7 @@ class HeartDiseaseModel:
         self.load_data()
 
     def load_data(self):
+        """for loading the data from a CSV file"""
         self.data = pd.read_csv('heart.csv')
 
     # def summary_statistics(self):
@@ -18,15 +19,17 @@ class HeartDiseaseModel:
     #     return self.data.corr()
 
     def summary_statistics(self):
+        """returns summary statistics for the data"""
         summary_stats = self.data.describe()
         return summary_stats.to_string()
 
     def calculate_correlations(self):
-        # Example correlations, replace with actual calculations
+        """returns correlation values for the data"""
         correlations = self.data.corr()
         return correlations.to_string()
 
     def filter_data(self, filters):
+        """filters the data based on the given criteria"""
         filtered_data = self.data.copy()
         for column, value in filters.items():
             filtered_data = filtered_data[filtered_data[column] == value]
