@@ -34,3 +34,4 @@ class HeartDiseaseModel:
         for column, value in filters.items():
             filtered_data = filtered_data[filtered_data[column] == value]
         return filtered_data
+
