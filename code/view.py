@@ -12,13 +12,27 @@ class HeartDiseaseView(ThemedTk):
         super().__init__()
         self.controller = controller
         self.title("Heart Disease Explorer")
+        self.set_theme("winxpblue")
         self.init_components()
         # self.init_home_page()
-        self.geometry("800x600")
-        self.set_theme("winxpblue")
+        self.geometry("1000x600")
         self.create_quit_button()
 
     def init_components(self):
+        # Create the left panel frames
+
+        self.left_panel1 = ttk.Frame(self, width=150, height=600)  # relief="solid",
+        self.left_panel2 = ttk.Frame(self, width=200, height=600)  # relief="solid", bg="white"
+
+        title_label = ttk.Label(self.left_panel1, text="History", font=("TkDefaultFont", 12, "bold"))
+        title_label.pack(side="top", fill="x", padx=5, pady=5)
+
+        self.left_panel1.pack(side="left", fill="y", padx=5, pady=5)
+        self.left_panel2.pack(side="left", fill="y", padx=5, pady=5)
+
+        self.left_panel1.pack_propagate(False)
+        self.left_panel2.pack_propagate(False)
+
         # Menu Bar for selecting theme
         self.menu_bar = tk.Menu(self)
         self.config(menu=self.menu_bar)
@@ -66,6 +80,12 @@ class HeartDiseaseView(ThemedTk):
         # Graph Tab
         self.graph_tab = ttk.Frame(self.feature_tabs)
         self.feature_tabs.add(self.graph_tab, text="Graph")
+
+    def tabs_left_panel1(self):
+        # Add widgets to the first left panel
+        label_left_panel = tk.Label(self.left_panel, text="Left Panel",
+                                    bg="white", padx=10, pady=5)
+        label_left_panel.pack()
 
     def change_theme(self, theme_value):
         self.set_theme(theme_value)
