@@ -1,7 +1,7 @@
 """handles the User interface of the application"""
 
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from model import *
 
 
@@ -13,8 +13,8 @@ class HeartDiseaseView(tk.Tk):
         self.title("Heart Disease Explorer")
         self.init_components()
         # self.init_home_page()
-        self.configure_window()
         self.create_quit_button()
+        self.configure_window()
 
     def configure_window(self):
         """Configure the window settings."""
@@ -22,23 +22,23 @@ class HeartDiseaseView(tk.Tk):
 
     def init_components(self):
         # Create the left panel frames
-        self.left_panel1 = ttk.Frame(self, width=150,
-                                     height=600)  # relief="solid",
-
-        attributes_label = ttk.Label(self.left_panel1,
-                                     text="Select Attribute:")
-        attributes_label.pack(side="top", fill="x", padx=5, pady=5)
+        # self.left_panel1 = ttk.Frame(self, width=150,
+        #                              height=600)  # relief="solid",
+        #
+        # attributes_label = ttk.Label(self.left_panel1,
+        #                              text="Select Attribute:")
+        # attributes_label.pack(side="top", fill="x", padx=5, pady=5)
 
         # Add a combobox to select attributes
-        self.attribute_combobox = ttk.Combobox(self.left_panel1,
-                                               values=["Attribute 1",
-                                                       "Attribute 2",
-                                                       "Attribute 3"])
-        self.attribute_combobox.pack(side="top", fill="x", padx=5, pady=5)
-        self.attribute_combobox.set("Attribute 1")  # Set default value
-        self.attribute_combobox.bind("<<ComboboxSelected>>", lambda
-            event: self.handle_attribute_selection(
-            self.attribute_combobox.get()))
+        # self.attribute_combobox = ttk.Combobox(self.left_panel1,
+        #                                        values=["Attribute 1",
+        #                                                "Attribute 2",
+        #                                                "Attribute 3"])
+        # self.attribute_combobox.pack(side="top", fill="x", padx=5, pady=5)
+        # self.attribute_combobox.set("Attribute 1")  # Set default value
+        # self.attribute_combobox.bind("<<ComboboxSelected>>", lambda
+        #     event: self.di_handle_attribute_selection(
+        #     self.attribute_combobox.get()))
 
         # Feature Tabs
         self.feature_tabs = ttk.Notebook(self)
@@ -61,6 +61,7 @@ class HeartDiseaseView(tk.Tk):
         # Statistics Tab
         self.statistics_tab = ttk.Frame(self.feature_tabs)
         self.feature_tabs.add(self.statistics_tab, text="Statistics")
+        self.init_statistics_tab()
 
         # Graph Tab
         self.graph_tab = ttk.Frame(self.feature_tabs)
@@ -81,18 +82,18 @@ class HeartDiseaseView(tk.Tk):
         self.attribute_combobox.pack(side="top", fill="x", padx=5, pady=5)
         self.attribute_combobox.set(column[0])  # Set default value
         self.attribute_combobox.bind("<<ComboboxSelected>>", lambda
-            event: self.handle_attribute_selection(
+            event: self.di_handle_attribute_selection(
             self.attribute_combobox.get()))
 
-    def handle_attribute_selection(self, selected_attribute):
+    def di_handle_attribute_selection(self, selected_attribute):
         """
         Handle the selection of an attribute in
         the combobox of the Data Information tab.
         """
         data_info = self.controller.summary_statistics()[selected_attribute]
-        self.update_data_information_tab(data_info)
+        self.di_update_data_information_tab(data_info)
 
-    def update_data_information_tab(self, data_info):
+    def di_update_data_information_tab(self, data_info):
         """Update the Data Information tab with the given data information."""
         for stat, value in data_info.items():
             # Check if a label for this statistic already exists
@@ -112,17 +113,114 @@ class HeartDiseaseView(tk.Tk):
                                        text=f"{stat}: {value}")
                 stat_label.pack(side="top", fill="x", padx=5, pady=2)
 
-    # def tabs_left_panel1(self):
-    #     """Create tabs for the application."""
-    #     # Add widgets to the first left panel
-    #     label_left_panel = tk.Label(self.left_panel, text="Left Panel",
-    #                                 bg="white", padx=10, pady=5)
-    #     label_left_panel.pack()
+    def init_statistics_tab(self):
+        """Initialize the Statistics tab."""
+        # Create the menu box
+        menu_label = ttk.Label(self.statistics_tab, text="Select Visualization:")
+        menu_label.pack(side="top", fill="x", padx=5, pady=5)
+
+        menu_var = tk.StringVar()
+        menu_var.set("Select Visualization")
+        menu_combobox = ttk.Combobox(self.statistics_tab, textvariable=menu_var,
+                                     values=["Bar Charts", "Histogram",
+                                             "Correlations"])
+        menu_combobox.pack(side="top", fill="x", padx=5, pady=5)
+        menu_combobox.bind("<<ComboboxSelected>>", self.handle_menu_selection)
+
+        # Create the label for the first attribute combobox
+        left_label = ttk.Label(self.statistics_tab,
+                               text="Select 1st attribute:")
+        left_label.pack(side="left", fill="x", padx=5, pady=5, expand=True)
+
+        # Create the attribute comboboxes
+        self.left_attribute_combobox = ttk.Combobox(self.statistics_tab,
+                                                    state="disabled")
+        self.left_attribute_combobox.pack(side="left", fill="x", padx=5,
+                                          pady=5, expand=True)
+
+        # Create the label for the second attribute combobox
+        right_label = ttk.Label(self.statistics_tab,
+                                text="Select 2nd attribute:")
+        right_label.pack(side="left", fill="x", padx=5, pady=5, expand=True)
+
+        self.right_attribute_combobox = ttk.Combobox(self.statistics_tab,
+                                                     state="disabled")
+        self.right_attribute_combobox.pack(side="left", fill="x", padx=5,
+                                           pady=5, expand=True)
+
+        # Create the button to create the graph
+        create_graph_button = ttk.Button(self.statistics_tab, text="Create Graph",
+                                            command=self.create_graph)
+        create_graph_button.pack(side="right", padx=5, pady=5)
+
+    def create_graph(self):
+        """Create a graph based on the selected visualization."""
+        selected = self.statistics_tab.winfo_children()[1].get()
+        left = self.left_attribute_combobox.get()
+        right = self.right_attribute_combobox.get()
+
+        if selected == "Bar Charts":
+            self.controller.plot_bar_chart(left)
+        elif selected == "Histogram":
+            self.controller.plot_histogram(left)
+        elif selected == "Correlations":
+            self.controller.plot_correlation(left, right)
+
+    def enable_comboboxes(self):
+        """Enable the comboboxes in the Statistics tab."""
+        self.left_attribute_combobox["state"] = "normal"
+        self.right_attribute_combobox["state"] = "normal"
+
+    def disable_right_combobox(self):
+        """Disable the right combobox in the Statistics tab."""
+        self.right_attribute_combobox.set("")
+        self.right_attribute_combobox["state"] = "disabled"
+
+    def handle_menu_selection(self, event):
+        """Handle the selection of a visualization in the Statistics tab."""
+
+        selected = event.widget.get()
+        if selected == "Bar Charts" or selected == "Histogram":
+            self.enable_comboboxes()
+            self.disable_right_combobox()
+
+            column = self.data_loader.get_column_names
+            self.left_attribute_combobox["values"] = column
+            self.left_attribute_combobox.set(column[0])
+
+        elif selected == "Correlations":
+            self.enable_comboboxes()
+
+            allowed_attributes = ["age", "trtbps", "chol", "thalachh"]
+            self.left_attribute_combobox["values"] = allowed_attributes
+            self.left_attribute_combobox.set(allowed_attributes[0])
+            self.left_attribute_combobox.bind("<<ComboboxSelected>>",
+                                              self.validate_comboboxes)
+            self.right_attribute_combobox["values"] = allowed_attributes
+            self.right_attribute_combobox.bind("<<ComboboxSelected>>",
+                                               self.validate_comboboxes)
+
+    def validate_comboboxes(self, event):
+        """Validate the selected attributes in the comboboxes."""
+        selected_left = self.left_attribute_combobox.get()
+        selected_right = self.right_attribute_combobox.get()
+
+        # Check if both comboboxes have selections
+        if selected_left and selected_right:
+            if selected_left == selected_right:
+                messagebox.showerror("Error", "Select different attributes.")
+                self.right_attribute_combobox.set("")
+        elif not selected_left:
+            messagebox.showerror("Error",
+                                 "Select an attribute for the left combobox.")
+        elif not selected_right:
+            messagebox.showerror("Error",
+                                 "Select an attribute for the right combobox.")
 
     def create_quit_button(self):
         # Button to gracefully exit
         self.quit_button = ttk.Button(self, text="Quit", command=self.quit)
-        self.quit_button.pack(side=tk.BOTTOM, padx=5, pady=5)
+        self.quit_button.pack(side=tk.BOTTOM, padx=10, pady=10)
 
     def init_home_page(self):
         # This function can be expanded for additional content on the home page

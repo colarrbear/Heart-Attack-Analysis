@@ -14,8 +14,6 @@ class DataLoader:
             cls._instance = super().__new__(cls)
             cls._instance.data = pd.read_csv('heart.csv')
         return cls._instance
-    # def __init__(self):
-    #     self.data = pd.read_csv('heart.csv')
 
     @property
     def load_data(self):
@@ -33,7 +31,10 @@ class DataLoader:
 
 
 class HDInformation:
-    """hold the data and return the summary statistics"""
+    """
+    Model for **data information** tab.
+    Hold the data and return the summary statistics
+    """
     def __init__(self):
         self.data = DataLoader()
 
@@ -43,19 +44,48 @@ class HDInformation:
 
     def summary_statistics(self):
         """returns summary statistics for the data"""
-        # return self.data.describe()
         return self.data.load_data.describe()
-        # return summary_stats.to_string()
 
     def calculate_correlations(self):
         """returns correlation values for the data"""
-        correlations = self.data.corr()
+        correlations = self.data.load_data.corr()
         return correlations
-        # return correlations.to_string()
 
     def filter_data(self, filters):
         """filters the data based on the given criteria"""
-        filtered_data = self.data.copy()
+        filtered_data = self.data.load_data.copy()
         for column, value in filters.items():
             filtered_data = filtered_data[filtered_data[column] == value]
         return filtered_data
+
+
+class Statistics:
+    """
+    Model for **statistics** tab. Calculate statistics including bar chart,
+    histogram and correlation for the data.
+    """
+    def __init__(self):
+        self.data = DataLoader()
+
+    def plot_bar_chart(self, attribute):
+        """for plotting a bar chart for the given attribute"""
+        df = self.data.load_data
+        plt.figure(figsize=(6, 4))
+        sns.countplot(data=df, x=attribute)
+        plt.title(f"Bar Chart for {attribute}")
+        plt.show()
+
+    def plot_histogram(self, attribute):
+        """for plotting a histogram for the given attribute"""
+        df = self.data.load_data
+        plt.figure(figsize=(6, 4))
+        sns.histplot(data=df, x=attribute, kde=True)
+        plt.title(f"Histogram for {attribute}")
+        plt.show()
+
+    def plot_correlation(self, attribute1, attribute2):
+        """for plotting a correlation between two attributes"""
+        df = self.data.load_data
+        sns.pairplot(df[[attribute1, attribute2]])
+        plt.title(f"Correlation between {attribute1} and {attribute2}")
+        plt.show()
