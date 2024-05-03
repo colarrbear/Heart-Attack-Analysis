@@ -1,10 +1,9 @@
-"""holds the data and calculations"""
+"""Model class for holds the data and calculations"""
 
 import pandas as pd
-import tkinter as tk
-
 
 class HeartDiseaseModel:
+    """holds the data and calculations for the heart disease data set"""
     def __init__(self):
         self.data = None
         self.load_data()
@@ -14,6 +13,7 @@ class HeartDiseaseModel:
         self.data = pd.read_csv('heart.csv')
 
     def correlations(self):
+        """for calculating the correlations between the attributes"""
         return self.data.corr()
 
     def summary_statistics(self):

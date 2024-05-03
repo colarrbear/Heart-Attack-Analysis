@@ -2,23 +2,20 @@
 
 import tkinter as tk
 from tkinter import ttk
-from ttkthemes import ThemedTk
 from model import *
 import time
 from data_analyze import DataAnalyze
 
 
-class HeartDiseaseView(ThemedTk):
+class HeartDiseaseView(tk.Tk):
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
         self.title("Heart Disease Explorer")
-        self.set_theme("winxpblue")
         self.init_components()
         # self.init_home_page()
         self.geometry("1000x600")
         self.create_quit_button()
-
 
     def init_components(self):
         # Create the left panel frames
@@ -64,32 +61,6 @@ class HeartDiseaseView(ThemedTk):
         #
         # self.left_panel1.pack_propagate(False)
         # self.left_panel2.pack_propagate(False)
-
-        # Menu Bar for selecting theme
-        self.menu_bar = tk.Menu(self)
-        self.config(menu=self.menu_bar)
-
-        self.theme_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.menu_bar.add_cascade(label="Theme", menu=self.theme_menu)
-
-        themes = {
-            "Arc Mode": "arc",
-            "Blue Mode": "blue",
-            "Clearlooks Mode": "clearlooks",
-            "Elegance Mode": "elegance",
-            "Kroc Mode": "kroc",
-            "Plastik Mode": "plastik",
-            "Radiance Mode": "radiance",
-
-            "Black Mode": "black",
-            "Equilux Mode": "equilux",
-        }
-        # "WinXPBlue Mode": "winxpblue",
-
-        for theme_name, theme_value in themes.items():
-            self.theme_menu.add_command(label=theme_name, command=lambda t=theme_value: self.change_theme(t))
-
-        self.theme_menu.add_command(label="Default Mode", command=self.set_default_theme)
 
         # Feature Tabs
         self.feature_tabs = ttk.Notebook(self)
@@ -209,65 +180,6 @@ class HeartDiseaseView(ThemedTk):
                                     bg="white", padx=10, pady=5)
         label_left_panel.pack()
 
-    def change_theme(self, theme_value):
-        """Change the theme of the application."""
-        self.set_theme(theme_value)
-
-        # Create a list to hold references to child widgets to be destroyed
-        widgets_to_destroy = []
-        for child in self.winfo_children():
-            if child != self.menu_bar and child != self.quit_button:
-                widgets_to_destroy.append(child)
-
-        # Destroy the child widgets in the list
-        for widget in widgets_to_destroy:
-            widget.destroy()
-
-        # Reinitialize components to reflect the new theme
-        self.feature_tabs.destroy()
-        self.init_components()
-
-        # Show pop-up box after theme change
-        self.show_theme_change_popup(theme_value)
-        # self.bind("<Configure>", self.show_theme_change_popup(theme_value))
-
-    def show_theme_change_popup(self, new_theme):
-        """Show a pop-up message indicating that the theme has been changed."""
-        popup_message = f"Theme changed to {new_theme}"
-        self.pop_up = Toast(self, popup_message, duration=2000)
-
-    def set_default_theme(self):
-        """Set the default theme of the application."""
-        # commented code below set aqua as a default.
-        # self.set_theme("aqua")
-        # # set to be centered
-        # self.geometry("800x600")
-        #
-        # # Create a list to hold references to child widgets to be destroyed
-        # widgets_to_destroy = []
-        # for child in self.winfo_children():
-        #     if child != self.menu_bar and child != self.quit_button:
-        #         widgets_to_destroy.append(child)
-        #
-        # # Destroy the child widgets in the list
-        # for widget in widgets_to_destroy:
-        #     widget.destroy()
-        #
-        # # Reinitialize components to reflect the default theme
-        # self.init_components()
-        # Disable the default theme
-
-        # Set new default theme to winxpblue
-        self.set_theme("winxpblue")
-
-        # Destroy and reinitialize components to reflect the default theme
-        widgets_to_destroy = [child for child in self.winfo_children() if
-                              child not in [self.menu_bar, self.quit_button]]
-        for widget in widgets_to_destroy:
-            widget.destroy()
-        self.init_components()
-        self.show_theme_change_popup("Default Theme Set")
-
     def create_quit_button(self):
         # Button to gracefully exit
         self.quit_button = ttk.Button(self, text="Quit", command=self.quit)
@@ -279,23 +191,3 @@ class HeartDiseaseView(ThemedTk):
 
     def run(self):
         self.mainloop()
-
-
-class Toast(tk.Toplevel):
-    def __init__(self, parent, message, duration=2000):
-        tk.Toplevel.__init__(self, parent)
-        self.overrideredirect(True)
-        self.attributes("-topmost", True)
-        self.parent = parent
-        self.message = message
-        self.duration = duration
-        self.label = tk.Label(self, text=self.message, bg="black", fg="white", padx=10, pady=5)
-        self.label.pack()
-        self.update_idletasks()
-        self.width = self.winfo_width()
-        self.height = self.winfo_height()
-        self.x = self.parent.winfo_x() + self.parent.winfo_width() - self.width - 20  # Adjust the offset as needed
-        self.y = self.parent.winfo_y() + 20  # Adjust the offset as needed
-        self.geometry("+{}+{}".format(self.x, self.y))
-        self.deiconify()
-        self.after(self.duration, self.destroy)

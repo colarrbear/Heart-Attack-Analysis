@@ -32,6 +32,7 @@
 #     #     return self.model.filter_data(filters)
 
 from model import HeartDiseaseModel
+# from view_ttkthemes import HeartDiseaseView
 from view import HeartDiseaseView
 
 
