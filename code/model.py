@@ -17,6 +17,7 @@ class DataLoader:
     # def __init__(self):
     #     self.data = pd.read_csv('heart.csv')
 
+    @property
     def load_data(self):
         """for loading the data from a CSV file"""
         return self.data
@@ -36,23 +37,14 @@ class HDInformation:
     def __init__(self):
         self.data = DataLoader()
 
-    # @property
-    # def get_column_names(self):
-    #     """Return the column names."""
-    #     return self.data.columns.tolist()
-    #
-    # def get_column_data(self, column):
-    #     """Return the data for the given column."""
-    #     return self.data[column]
-
     def correlations(self):
         """for calculating the correlations between the attributes"""
         return self.data.corr()
 
     def summary_statistics(self):
         """returns summary statistics for the data"""
-        summary_stats = self.data.describe()
-        return summary_stats
+        # return self.data.describe()
+        return self.data.load_data.describe()
         # return summary_stats.to_string()
 
     def calculate_correlations(self):
