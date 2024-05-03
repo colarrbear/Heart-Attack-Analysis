@@ -31,16 +31,16 @@
 #     # def filter_data(self, filters):
 #     #     return self.model.filter_data(filters)
 
-from model import HeartDiseaseModel
+from model import *
 # from view_ttkthemes import HeartDiseaseView
 from view import HeartDiseaseView
 
 
-class HeartDiseaseController:
+class HDController:
     """to connect the model and view"""
-    def __init__(self):
-        self.model = HeartDiseaseModel()
-        self.view = HeartDiseaseView(self)
+    def __init__(self, ):
+        self.model = HDInformation()
+        self.view = HeartDiseaseView(self.model)
 
     def run(self):
         self.view.run()

@@ -4,13 +4,13 @@ import tkinter as tk
 from tkinter import ttk
 from model import *
 import time
-from data_analyze import DataAnalyze
 
 
 class HeartDiseaseView(tk.Tk):
     def __init__(self, controller):
         super().__init__()
         self.controller = controller
+        self.data_loader = controller.data
         self.title("Heart Disease Explorer")
         self.init_components()
         # self.init_home_page()
@@ -18,6 +18,7 @@ class HeartDiseaseView(tk.Tk):
         self.create_quit_button()
 
     def configure_window(self):
+        """Configure the window settings."""
         self.resizable(True, True)
 
     def init_components(self):
@@ -100,7 +101,9 @@ class HeartDiseaseView(tk.Tk):
         attributes_label.pack(side="top", fill="x", padx=5, pady=5)
 
         # column = pd.read_csv('heart.csv').columns
-        column = DataAnalyze().get_column_names()
+        # column = DataLoader().get_column_names()
+        # column = self.controller.get_column_names()
+        column = self.data_loader.get_column_names
 
         # Add a combobox to select attributes in Data Information tab
         self.attribute_combobox = ttk.Combobox(self.data_information_tab,
@@ -133,48 +136,49 @@ class HeartDiseaseView(tk.Tk):
     #     self.left_panel1.pack_propagate(False)
 
     def handle_attribute_selection(self, selected_attribute):
-        """Handle the selection of an attribute in the combobox of the Data Information tab."""
-        # Get data analyzer instance
-        data_analyzer = DataAnalyze()
+        """
+        Handle the selection of an attribute in
+        the combobox of the Data Information tab.
+        """
+        data_info = self.data_loader.get_column_data(selected_attribute)
 
-        # Retrieve data information for the selected attribute
-        data_info = data_analyzer.summary_statistics(selected_attribute)
-
-        # Update the UI in the "Data Information" tab to display retrieved information
         self.update_data_information_tab(data_info)
+
+    # def handle_attribute_selection(self, selected_attribute):
+    #     """Handle the selection of an attribute in the combobox of the Data Information tab."""
+    #     # Get data analyzer instance
+    #     data = self.controller.data
+    #     # data_analyzer = DataLoader()
+    #
+    #     # Retrieve data information for the selected attribute
+    #     data_info = data.get_column_data(selected_attribute)
+    #
+    #     # data_info = data.summary_statistics(selected_attribute)
+    #
+    #     # Update the UI in the "Data Information" tab to display retrieved information
+    #     self.update_data_information_tab(data_info)
 
     def update_data_information_tab(self, data_info):
         """Update the Data Information tab with the given data information."""
-        for stat, value in data_info.items():
-            # Check if a label for this statistic already exists
-            existing_label = None
-            for child in self.data_information_tab.winfo_children():
-                if isinstance(child, ttk.Label) and child.cget(
-                        "text").startswith(stat + ":"):
-                    existing_label = child
-                    break
+        pass
 
-            # If an existing label exists, update its text
-            if existing_label:
-                existing_label.config(text=f"{stat}: {value}")
-            # Otherwise, create a new label
-            else:
-                stat_label = ttk.Label(self.data_information_tab,
-                                       text=f"{stat}: {value}")
-                stat_label.pack(side="top", fill="x", padx=5, pady=2)
-        # Clear any existing content in the tab
-        # for widget in self.data_information_tab.winfo_children():
-        #     widget.destroy()
-        #
-        #
-        #
-        # # Display the statistics in the tab
         # for stat, value in data_info.items():
-        #     stat_label = ttk.Label(self.data_information_tab,
-        #                            text=f"{stat}: {value}")
-        #     stat_label.pack(side="top", fill="x", padx=5, pady=2)
-
-        # self.attribute_combobox.destroy()
+        #     # Check if a label for this statistic already exists
+        #     existing_label = None
+        #     for child in self.data_information_tab.winfo_children():
+        #         if isinstance(child, ttk.Label) and child.cget(
+        #                 "text").startswith(stat + ":"):
+        #             existing_label = child
+        #             break
+        #
+        #     # If an existing label exists, update its text
+        #     if existing_label:
+        #         existing_label.config(text=f"{stat}: {value}")
+        #     # Otherwise, create a new label
+        #     else:
+        #         stat_label = ttk.Label(self.data_information_tab,
+        #                                text=f"{stat}: {value}")
+        #         stat_label.pack(side="top", fill="x", padx=5, pady=2)
 
     def tabs_left_panel1(self):
         """Create tabs for the application."""

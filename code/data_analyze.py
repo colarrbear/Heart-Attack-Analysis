@@ -1,7 +1,7 @@
-import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
-from model import HeartDiseaseModel
+# import matplotlib.pyplot as plt
+# import seaborn as sns
+# import pandas as pd
+# from model import HeartDiseaseModel
 
 # pd.read_csv('heart.csv')
 # print([i for i in data.columns])
@@ -33,23 +33,23 @@ from model import HeartDiseaseModel
 
 # plot_correlation_heatmap(data)
 
-class DataAnalyze:
-    """Class for analyzing data."""
-
-    def __init__(self):
-        self.data = pd.read_csv('heart.csv')
-
-    def get_column_names(self):
-        """Return the column names."""
-        return self.data.columns.tolist()
+# class DataLoader:
+#     """Class for analyzing data."""
+#
+#     def __init__(self):
+#         self.data = pd.read_csv('heart.csv')
+#
+#     def get_column_names(self):
+#         """Return the column names."""
+#         return self.data.columns.tolist()
 
 
 # class DataInfomationWorker:
 #     """Class for showing in Data Information tab."""
 
-    def summary_statistics(self, column):
-        """Return the summary statistics."""
-        return self.data[column].describe()
+    # def summary_statistics(self, column):
+    #     """Return the summary statistics."""
+    #     return self.data[column].describe()
 
         # if choice == 'mean':
         #     return df[column].mean()
@@ -72,6 +72,6 @@ class DataAnalyze:
         # else:
         #     return 'Invalid choice'
 
-    def correlations(self, df):
-        """Return the correlations."""
-        return df.corr()
+    # def correlations(self, df):
+    #     """Return the correlations."""
+    #     return df.corr()

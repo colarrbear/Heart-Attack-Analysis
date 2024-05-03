@@ -1,16 +1,49 @@
 """Model class for holds the data and calculations"""
 
+import matplotlib.pyplot as plt
+import seaborn as sns
 import pandas as pd
 
-class HeartDiseaseModel:
-    """holds the data and calculations for the heart disease data set"""
-    def __init__(self):
-        self.data = None
-        self.load_data()
+
+class DataLoader:
+    """Class for load data."""
+    _instance = None  # Singleton instance
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance.data = pd.read_csv('heart.csv')
+        return cls._instance
+    # def __init__(self):
+    #     self.data = pd.read_csv('heart.csv')
 
     def load_data(self):
         """for loading the data from a CSV file"""
-        self.data = pd.read_csv('heart.csv')
+        return self.data
+
+    @property
+    def get_column_names(self):
+        """Return the column names."""
+        return self.data.columns.tolist()
+
+    def get_column_data(self, column):
+        """Return the data for the given column."""
+        return self.data[column]
+
+
+class HDInformation:
+    """hold the data and return the summary statistics"""
+    def __init__(self):
+        self.data = DataLoader()
+
+    # @property
+    # def get_column_names(self):
+    #     """Return the column names."""
+    #     return self.data.columns.tolist()
+    #
+    # def get_column_data(self, column):
+    #     """Return the data for the given column."""
+    #     return self.data[column]
 
     def correlations(self):
         """for calculating the correlations between the attributes"""
@@ -34,5 +67,3 @@ class HeartDiseaseModel:
         for column, value in filters.items():
             filtered_data = filtered_data[filtered_data[column] == value]
         return filtered_data
-
-# print(pd.read_csv('heart.csv'))
