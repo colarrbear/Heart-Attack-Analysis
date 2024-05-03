@@ -14,8 +14,11 @@ class HeartDiseaseView(tk.Tk):
         self.title("Heart Disease Explorer")
         self.init_components()
         # self.init_home_page()
-        self.geometry("1000x600")
+        self.configure_window()
         self.create_quit_button()
+
+    def configure_window(self):
+        self.resizable(True, True)
 
     def init_components(self):
         # Create the left panel frames

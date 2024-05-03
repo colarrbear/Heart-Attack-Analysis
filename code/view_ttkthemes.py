@@ -1,3 +1,8 @@
+# since tkinter default built-in themes does not have dark mode, so
+# below code is the code using ttkthemes to let user can change the theme of the application.
+# but will not use in the final project.
+
+
 # """handles the User interface of the application"""
 #
 # import tkinter as tk
