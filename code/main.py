@@ -1,4 +1,3 @@
-# from controllers import HeartDiseaseController
 from controllers import HDController
 
 
