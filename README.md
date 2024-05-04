@@ -19,13 +19,13 @@ To run the application, ensure you have the following dependencies installed:
 
 ## Instructions
 
-### - Clone the repository:
+### Clone the repository:
 
     ```bash
     git clone https://github.com/colarrbear/Heart-Attack-Analysis
     ```
 
-### - Create a virtual environment and install dependencies
+### Create a virtual environment and install dependencies
 
 1. Change your directory to Heart-Attack-Analysis/code
 ```
@@ -51,8 +51,8 @@ pip install -r requirements.txt
 
 5. Run the application:
 
-    ```bash
-    python main.py
-    ```
+```bash
+python main.py
+```
 
-    (For macOS users, use `python3 main.py` instead of `python main.py`)
+(For macOS users, use `python3 main.py` instead of `python main.py`)
