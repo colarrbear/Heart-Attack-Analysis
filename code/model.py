@@ -83,14 +83,14 @@ class PlotGraphs:
                 messagebox.showerror("Error",
                                      "Select an attribute for the right combobox.")
                 return
-            # elif attb1 == attb2:
-            #     messagebox.showerror("Error",
-            #                          "Select different attributes for the comboboxes.")
-            #     attb2.replace(attb2, '')
-            #     return
 
             fig, ax = plt.subplots(figsize=(6, 4))
-            sns.barplot(data=df, x=attb1, y=attb2)
+            if attb1 == 'sex':
+                sns.barplot(data=df, x=attb1, y=attb2, hue=attb1)
+            elif attb2 == 'sex':
+                sns.barplot(data=df, x=attb2, y=attb1, hue=attb2)
+            else:
+                sns.barplot(data=df, x=attb1, y=attb2)
             plt.title(f"Bar Chart for {attb1} and {attb2}")
             # Embed the plot into the tkinter frame
             canvas = FigureCanvasTkAgg(fig, master=parent_frame)

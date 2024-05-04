@@ -1,6 +1,6 @@
 """handles the User interface of the application"""
 #TODO:
-# - nominal data (e.g. gender) must not compute in descriptive stat
+# - nominal data (e.g. gender) must not compute in descriptive statatistics.
 # - (done) bar chart still received only one attribute. Not yet implemented for two attributes.
 # - (done) correlation still not yet implemented for one attribute.
 # - For "Graph" (superior graph) tab and Home tab is work in progress.
@@ -18,7 +18,6 @@ class HeartDiseaseView(tk.Tk):
         self.plotter = PlotGraphs(self.data_loader)
         self.title("Heart Disease Explorer")
         self.init_components()
-        # self.init_home_page()
         self.create_quit_button()
         self.configure_window()
 
@@ -229,7 +228,6 @@ class HeartDiseaseView(tk.Tk):
         right_enabled = self.right_attribute_combobox["state"] == "normal"
 
         # Check if both comboboxes have selections
-        # if selected_left and selected_right and left_enabled and right_enabled:
         if selected_left and selected_right:
             if selected_left == selected_right:
                 messagebox.showerror("Error", "Select different attributes.")
@@ -240,18 +238,6 @@ class HeartDiseaseView(tk.Tk):
         elif not selected_right and right_enabled:
             messagebox.showerror("Error",
                                  "Select an attribute for the right combobox.")
-
-        # # Check if both comboboxes have selections
-        # if selected_left and selected_right:
-        #     if selected_left == selected_right:
-        #         messagebox.showerror("Error", "Select different attributes.")
-        #         self.right_attribute_combobox.set("")
-        # elif not selected_left:
-        #     messagebox.showerror("Error",
-        #                          "Select an attribute for the left combobox.")
-        # elif not selected_right:
-        #     messagebox.showerror("Error",
-        #                          "Select an attribute for the right combobox.")
 
     def create_quit_button(self):
         """ Button to gracefully exit"""
