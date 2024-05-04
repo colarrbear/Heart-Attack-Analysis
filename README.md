@@ -33,15 +33,16 @@ cd Heart-Attack-Analysis/code
 ```
 2. Create virtual environment using this command.
 ```
-virtualenv env
+python -m virtualenv env
 ```
 
 3. Activate the virtual environment
 ```
 # On Linux or MacOS
-source venv/bin/activate
+source env/bin/activate
+
 # On MS Windows
-venv\Scripts\activate
+env\Scripts\activate
 ```
 
 4. Installing Dependencies
