@@ -29,7 +29,11 @@ git checkout preview
 ```
 2. Create virtual environment using this command.
 ```
-python3.11 -m venv env
+# On Linux or MacOS
+python3 -m venv env
+
+# On MS Windows
+python -m venv env
 ```
 
 3. Activate the virtual environment
