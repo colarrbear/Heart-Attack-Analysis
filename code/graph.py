@@ -10,7 +10,6 @@ class HeartDiseaseView(tk.Tk):
         super().__init__()
         self.controller = controller
         self.data_loader = controller.data
-        self.plotter = PlotGraphs(self.data_loader)
         self.title("Heart Disease Explorer")
         self.init_components()
         # self.init_home_page()
@@ -22,6 +21,25 @@ class HeartDiseaseView(tk.Tk):
         self.resizable(True, True)
 
     def init_components(self):
+        # Create the left panel frames
+        # self.left_panel1 = ttk.Frame(self, width=150,
+        #                              height=600)  # relief="solid",
+        #
+        # attributes_label = ttk.Label(self.left_panel1,
+        #                              text="Select Attribute:")
+        # attributes_label.pack(side="top", fill="x", padx=5, pady=5)
+
+        # Add a combobox to select attributes
+        # self.attribute_combobox = ttk.Combobox(self.left_panel1,
+        #                                        values=["Attribute 1",
+        #                                                "Attribute 2",
+        #                                                "Attribute 3"])
+        # self.attribute_combobox.pack(side="top", fill="x", padx=5, pady=5)
+        # self.attribute_combobox.set("Attribute 1")  # Set default value
+        # self.attribute_combobox.bind("<<ComboboxSelected>>", lambda
+        #     event: self.di_handle_attribute_selection(
+        #     self.attribute_combobox.get()))
+
         # Feature Tabs
         self.feature_tabs = ttk.Notebook(self)
         self.feature_tabs.configure(padding=10)
@@ -38,7 +56,7 @@ class HeartDiseaseView(tk.Tk):
         self.data_information_tab = ttk.Frame(self.feature_tabs)
         self.feature_tabs.add(self.data_information_tab,
                               text="Data Information")
-        # self.init_data_information_tab()
+        self.init_data_information_tab()
 
         # Statistics Tab
         self.statistics_tab = ttk.Frame(self.feature_tabs)
@@ -49,16 +67,54 @@ class HeartDiseaseView(tk.Tk):
         self.graph_tab = ttk.Frame(self.feature_tabs)
         self.feature_tabs.add(self.graph_tab, text="Graph")
 
+    def init_data_information_tab(self):
+        """Initialize the Data Information tab."""
+        # Add a label for the combobox in Data Information tab
+        attributes_label = ttk.Label(self.data_information_tab,
+                                     text="Select Attribute:")
+        attributes_label.pack(side="top", fill="x", padx=5, pady=5)
+
+        column = self.data_loader.get_column_names
+
+        # Add a combobox to select attributes in Data Information tab
+        self.attribute_combobox = ttk.Combobox(self.data_information_tab,
+                                               values=[i for i in column])
+        self.attribute_combobox.pack(side="top", fill="x", padx=5, pady=5)
+        self.attribute_combobox.set(column[0])  # Set default value
+        self.attribute_combobox.bind("<<ComboboxSelected>>", lambda
+            event: self.di_handle_attribute_selection(
+            self.attribute_combobox.get()))
+
+    def di_handle_attribute_selection(self, selected_attribute):
+        """
+        Handle the selection of an attribute in
+        the combobox of the Data Information tab.
+        """
+        data_info = self.controller.summary_statistics()[selected_attribute]
+        self.di_update_data_information_tab(data_info)
+
+    def di_update_data_information_tab(self, data_info):
+        """Update the Data Information tab with the given data information."""
+        for stat, value in data_info.items():
+            # Check if a label for this statistic already exists
+            existing_label = None
+            for child in self.data_information_tab.winfo_children():
+                if isinstance(child, ttk.Label) and child.cget(
+                        "text").startswith(stat + ":"):
+                    existing_label = child
+                    break
+
+            # If an existing label exists, update its text
+            if existing_label:
+                existing_label.config(text=f"{stat}: {value}")
+            # Otherwise, create a new label
+            else:
+                stat_label = ttk.Label(self.data_information_tab,
+                                       text=f"{stat}: {value}")
+                stat_label.pack(side="top", fill="x", padx=5, pady=2)
+
     def init_statistics_tab(self):
         """Initialize the Statistics tab."""
-        # Create a frame for visual separation
-        separator_frame = tk.Frame(self.statistics_tab, height=10)
-        separator_frame.pack(side="bottom", pady=10)
-
-        # Create another frame for the graph canvas
-        self.graph_canvas_frame = tk.Frame(self.statistics_tab)
-        self.graph_canvas_frame.pack(side="bottom", fill="both", expand=True)
-
         # Create the menu box
         menu_label = ttk.Label(self.statistics_tab, text="Select Visualization:")
         menu_label.pack(side="top", fill="x", padx=5, pady=5)
@@ -109,11 +165,11 @@ class HeartDiseaseView(tk.Tk):
 
         # Plot the graph based on the selected visualization
         if selected == "Bar Charts":
-            self.plotter.plot_bar_chart(left, self.graph_canvas_frame)
+            self.controller.plot_bar_chart(left)
         elif selected == "Histogram":
-            self.plotter.plot_histogram(left, self.graph_canvas_frame)
+            self.controller.plot_histogram(left)
         elif selected == "Correlations":
-            self.plotter.plot_correlation(left, right)
+            self.controller.plot_correlation(left, right)
 
     def enable_comboboxes(self):
         """Enable the comboboxes in the Statistics tab."""
