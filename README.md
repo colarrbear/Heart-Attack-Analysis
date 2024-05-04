@@ -22,7 +22,7 @@ To run the application, ensure you have the following dependencies installed:
 1. Clone the repository:
 
     ```bash
-    git clone <repository_url>
+    git clone https://github.com/colarrbear/Heart-Attack-Analysis
     ```
 
 2. Navigate to the project directory:
