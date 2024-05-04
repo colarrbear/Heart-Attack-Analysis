@@ -33,7 +33,7 @@ cd Heart-Attack-Analysis/code
 ```
 2. Create virtual environment using this command.
 ```
-python -m venv env
+python3.11 -m venv env
 ```
 
 3. Activate the virtual environment

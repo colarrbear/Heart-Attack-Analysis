@@ -248,6 +248,42 @@ class HeartDiseaseView(tk.Tk):
         """This function can be expanded for additional content on the home page"""
         label = ttk.Label(self.home_tab, text="WIP: Home Page, see other tabs for content.")
         label.pack()
+        # Create a Treeview widget
+
+        home_frame = ttk.Frame(self.home_tab)
+        home_frame.pack(fill="both", expand=True)
+
+        tree = ttk.Treeview(home_frame)
+        tree["columns"] = self.data_loader.get_column_names
+        tree.heading("#0", text="Index")
+
+        # Calculate the initial width of each column
+        num_columns = len(self.data_loader.get_column_names)
+        column_width = int(( self.winfo_width() - 20) / num_columns)
+        for column in self.data_loader.get_column_names:
+            tree.heading(column, text=column)
+            tree.column(column, width=column_width, anchor="center")
+
+        data = self.data_loader.data.to_numpy().tolist()
+        for idx, row in enumerate(data, start=1):
+            tree.insert("", "end", text=str(idx), values=row)
+
+        # Add a scrollbar
+        scrollbar = ttk.Scrollbar(home_frame, orient="vertical",
+                                  command=tree.yview)
+        tree.configure(yscrollcommand=scrollbar.set)
+        scrollbar.pack(side="right", fill="y")
+
+        # Pack the Treeview
+        tree.pack(side="left", fill="both", expand=True)
+
+        max_width = self.winfo_screenwidth() - 100
+        max_height = self.winfo_screenheight() - 100
+        home_frame.pack_propagate(False)
+        home_frame.config(width=min(max_width,
+                                    tree.winfo_reqwidth() + scrollbar.winfo_reqwidth()),
+                          height=min(max_height, tree.winfo_reqheight()))
+
 
     def init_advance_graph_tab(self):
         """This function can be expanded for additional content on the home page"""
