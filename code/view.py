@@ -1,8 +1,8 @@
 """handles the User interface of the application"""
 #TODO:
 # - nominal data (e.g. gender) must not compute in descriptive stat
-# - bar chart still received only one attribute. Not yet implemented for two attributes.
-# - correlation still not yet implemented for one attribute.
+# - (done) bar chart still received only one attribute. Not yet implemented for two attributes.
+# - (done) correlation still not yet implemented for one attribute.
 # - For "Graph" (superior graph) tab and Home tab is work in progress.
 
 import tkinter as tk
@@ -170,7 +170,8 @@ class HeartDiseaseView(tk.Tk):
         elif selected == "Histogram":
             self.plotter.plot_histogram(left, self.graph_canvas_frame)
         elif selected == "Correlations":
-            self.plotter.plot_correlation(left, right)
+            self.disable_comboboxes()
+            self.plotter.plot_correlation(self.graph_canvas_frame)
 
     def enable_comboboxes(self):
         """Enable the comboboxes in the Statistics tab."""
@@ -180,6 +181,13 @@ class HeartDiseaseView(tk.Tk):
     def disable_right_combobox(self):
         """Disable the right combobox in the Statistics tab."""
         self.right_attribute_combobox.set("")
+        self.right_attribute_combobox["state"] = "disabled"
+
+    def disable_comboboxes(self):
+        """Disable all the comboboxes in the Statistics tab."""
+        self.left_attribute_combobox.set("")
+        self.right_attribute_combobox.set("")
+        self.left_attribute_combobox["state"] = "disabled"
         self.right_attribute_combobox["state"] = "disabled"
 
     def handle_menu_selection(self, event):
@@ -208,16 +216,17 @@ class HeartDiseaseView(tk.Tk):
                                                self.validate_comboboxes)
 
         elif selected == "Correlations":
-            self.enable_comboboxes()
-
-            allowed_attributes = ["age", "trtbps", "chol", "thalachh"]
-            self.left_attribute_combobox["values"] = allowed_attributes
-            self.left_attribute_combobox.set(allowed_attributes[0])
-            self.left_attribute_combobox.bind("<<ComboboxSelected>>",
-                                              self.validate_comboboxes)
-            self.right_attribute_combobox["values"] = allowed_attributes
-            self.right_attribute_combobox.bind("<<ComboboxSelected>>",
-                                               self.validate_comboboxes)
+            pass
+            # self.enable_comboboxes()
+            #
+            # allowed_attributes = ["age", "trtbps", "chol", "thalachh"]
+            # self.left_attribute_combobox["values"] = allowed_attributes
+            # self.left_attribute_combobox.set(allowed_attributes[0])
+            # self.left_attribute_combobox.bind("<<ComboboxSelected>>",
+            #                                   self.validate_comboboxes)
+            # self.right_attribute_combobox["values"] = allowed_attributes
+            # self.right_attribute_combobox.bind("<<ComboboxSelected>>",
+            #                                    self.validate_comboboxes)
 
     def validate_comboboxes(self, event):
         """Validate the selected attributes in the comboboxes."""

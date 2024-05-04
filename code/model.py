@@ -65,15 +65,6 @@ class PlotGraphs:
         correlations = self.data.load_data.corr()
         return correlations
 
-
-# class Statistics:
-#     """
-#     Model for **statistics** tab. Calculate statistics including bar chart,
-#     histogram and correlation for the data.
-#     """
-#     def __init__(self):
-#         self.data = DataLoader()
-
     def plot_bar_chart(self, attb1, attb2, parent_frame) -> tk.Widget:
         """for plotting a bar chart for the given attribute"""
         if attb1 == 'sex' and attb2 == '':  # nominal
@@ -81,7 +72,6 @@ class PlotGraphs:
             fig, ax = plt.subplots(figsize=(6, 4))
             sns.countplot(data=df, x=attb1, hue=attb1)
             plt.title(f"Bar Chart for {attb1}")
-            # plt.show()
             # Embed the plot into the tkinter frame
             canvas = FigureCanvasTkAgg(fig, master=parent_frame)
             canvas.draw()
@@ -104,29 +94,28 @@ class PlotGraphs:
         fig, ax = plt.subplots(figsize=(6, 4))
         sns.histplot(data=df, x=attribute, kde=True, ax=ax)
         plt.title(f"Histogram for {attribute}")
-        # plt.show()
         # Embed the plot into the tkinter frame
         canvas = FigureCanvasTkAgg(fig, master=parent_frame)
         canvas.draw()
         canvas.get_tk_widget().pack(side=tk.BOTTOM)
-        # canvas = FigureCanvasTkAgg(plt.gcf(),
-        #                            master=parent_frame)
-        # canvas.draw()
-        #
+
         return canvas.get_tk_widget()
 
-    def plot_correlation(self, attribute1, attribute2):
+    def plot_correlation(self, parent_frame):
         """for plotting a correlation between two attributes"""
-        df = self.data.load_data
-        sns.pairplot(df[[attribute1, attribute2]])
-        plt.title(f"Correlation between {attribute1} and {attribute2}")
-        # plt.show()
 
-    # def _display_plot(self):
-    #     """Display the plot in the graph frame."""
-    #     if self.graph_frame:
-    #         plt.show()
-    #
-    # def set_graph_frame(self, frame):
-    #     """Set the frame where graphs will be displayed."""
-    #     self.graph_frame = frame
+        # Selecting only the specified attributes for correlation calculation
+        selected_attributes = ["age", "trtbps", "chol", "thalachh"]
+        df_corr = self.data.load_data[selected_attributes].corr()
+
+        # Plot the correlation matrix
+        fig, ax = plt.subplots(figsize=(6, 4))
+        sns.heatmap(df_corr, annot=True, cmap="coolwarm", ax=ax)
+
+        plt.title(f"Correlation of age, trtbps, chol, thalachh")
+        # Embed the plot into the tkinter frame
+        canvas = FigureCanvasTkAgg(plt.gcf(), master=parent_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.BOTTOM)
+
+        return canvas.get_tk_widget()
