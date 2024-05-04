@@ -17,27 +17,39 @@ To run the application, ensure you have the following dependencies installed:
 - Pillow >= 10.3.0, < 10.4
 - seaborn >= 0.13.2, < 0.14
 
-### Instructions
+## Instructions
 
-1. Clone the repository:
+### - Clone the repository:
 
     ```bash
     git clone https://github.com/colarrbear/Heart-Attack-Analysis
     ```
 
-2. Navigate to the project directory:
+### - Create a virtual environment and install dependencies
 
-    ```bash
-    cd Heart-Attack-Analysis/code
-    ```
+1. Change your directory to Heart-Attack-Analysis/code
+```
+cd Heart-Attack-Analysis/code
+```
+2. Create virtual environment using this command.
+```
+virtualenv env
+```
 
-3. Install the required dependencies:
+3. Activate the virtual environment
+```
+# On Linux or MacOS
+source venv/bin/activate
+# On MS Windows
+venv\Scripts\activate
+```
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+4. Installing Dependencies
+```
+pip install -r requirements.txt
+```
 
-4. Run the application:
+5. Run the application:
 
     ```bash
     python main.py
