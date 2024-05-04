@@ -74,21 +74,29 @@ class PlotGraphs:
 #     def __init__(self):
 #         self.data = DataLoader()
 
-    # def plot_bar_chart(self, attribute, parent_frame) -> tk.Widget:
-    #     """for plotting a bar chart for the given attribute"""
-    #     df = self.data.load_data
-    #     fig, ax = plt.subplots(figsize=(6, 4))
-    #     sns.barplot(data=df, x=attribute, ax=ax)
-    #     ax.set_title(f"Bar Chart for {attribute}")
-    #     # plt.show()
-    #     # Embed the plot into the tkinter frame
-    #     canvas = FigureCanvasTkAgg(fig, master=parent_frame)
-    #     canvas.draw()
-    #     canvas.get_tk_widget().pack()
-        # canvas = FigureCanvasTkAgg(plt.gcf(), master=parent_frame)
-        # canvas.draw()
-        #
-        # return canvas.get_tk_widget()
+    def plot_bar_chart(self, attb1, attb2, parent_frame) -> tk.Widget:
+        """for plotting a bar chart for the given attribute"""
+        if attb1 == 'sex' and attb2 == '':  # nominal
+            df = self.data.load_data
+            fig, ax = plt.subplots(figsize=(6, 4))
+            sns.countplot(data=df, x=attb1, hue=attb1)
+            plt.title(f"Bar Chart for {attb1}")
+            # plt.show()
+            # Embed the plot into the tkinter frame
+            canvas = FigureCanvasTkAgg(fig, master=parent_frame)
+            canvas.draw()
+            canvas.get_tk_widget().pack(side=tk.BOTTOM)
+            return canvas.get_tk_widget()
+        else:
+            df = self.data.load_data
+            fig, ax = plt.subplots(figsize=(6, 4))
+            sns.barplot(data=df, x=attb1, y=attb2)
+            plt.title(f"Bar Chart for {attb1} and {attb2}")
+            # Embed the plot into the tkinter frame
+            canvas = FigureCanvasTkAgg(fig, master=parent_frame)
+            canvas.draw()
+            canvas.get_tk_widget().pack(side=tk.BOTTOM)
+            return canvas.get_tk_widget()
 
     def plot_histogram(self, attribute, parent_frame) -> tk.Widget:
         """for plotting a histogram for the given attribute"""
