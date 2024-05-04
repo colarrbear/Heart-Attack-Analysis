@@ -244,11 +244,13 @@ class HeartDiseaseView(tk.Tk):
 
     def init_home_tab(self):
         """This function can be expanded for additional content on the home page"""
-        pass
+        label = ttk.Label(self.home_tab, text="WIP: Home Page, see other tabs for content.")
+        label.pack()
 
     def init_advance_graph_tab(self):
         """This function can be expanded for additional content on the home page"""
-        pass
+        label = ttk.Label(self.graph_tab, text="WIP: Graph Page, see other tabs for content.")
+        label.pack()
 
     def run(self):
         self.mainloop()
