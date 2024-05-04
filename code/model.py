@@ -4,6 +4,7 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import tkinter as tk
+from tkinter import messagebox
 import seaborn as sns
 import pandas as pd
 import numpy as np
@@ -74,6 +75,15 @@ class PlotGraphs:
             return canvas.get_tk_widget()
         else:
             df = self.data.load_data
+            if not attb1:
+                messagebox.showerror("Error",
+                                     "Select an attribute for the left combobox.")
+                return
+            elif not attb2:
+                messagebox.showerror("Error",
+                                     "Select an attribute for the right combobox.")
+                return
+
             fig, ax = plt.subplots(figsize=(6, 4))
             sns.barplot(data=df, x=attb1, y=attb2)
             plt.title(f"Bar Chart for {attb1} and {attb2}")
