@@ -7,7 +7,6 @@ import tkinter as tk
 from tkinter import messagebox
 import seaborn as sns
 import pandas as pd
-import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 matplotlib.use('TkAgg')
 

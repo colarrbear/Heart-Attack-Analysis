@@ -14,7 +14,6 @@ To run the application, ensure you have the following dependencies installed:
 - matplotlib >= 3.8.4, < 4.0
 - numpy >= 1.26.4, < 2.0
 - pandas >= 2.2.2, < 2.3
-- Pillow >= 10.3.0, < 10.4
 - seaborn >= 0.13.2, < 0.14
 
 ## Instructions
@@ -57,3 +56,12 @@ python main.py
 ```
 
 (For macOS users, use `python3 main.py` instead of `python main.py`)
+
+---
+* [Project proposal](https://docs.google.com/document/d/1cK3Otg6wmBJlHFTzc7z4ahu424MmSIQ7ScpTdTMndsI/edit)
+* [Development Plan](https://github.com/colarrbear/Heart-Attack-Analysis/wiki/Development-Plan-for-Heart-Attack-Analysis-Project)
+* [Design Documents and UML Diagrams](https://github.com/colarrbear/Heart-Attack-Analysis/wiki/Design-Documents-and-UML-Diagrams)
+
+## Data Sources
+
+The dataset used in this project is obtained from [Kaggle](https://www.kaggle.com/datasets/rashikrahmanpritom/heart-attack-analysis-prediction-dataset/data).
