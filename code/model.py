@@ -83,6 +83,11 @@ class PlotGraphs:
                 messagebox.showerror("Error",
                                      "Select an attribute for the right combobox.")
                 return
+            # elif attb1 == attb2:
+            #     messagebox.showerror("Error",
+            #                          "Select different attributes for the comboboxes.")
+            #     attb2.replace(attb2, '')
+            #     return
 
             fig, ax = plt.subplots(figsize=(6, 4))
             sns.barplot(data=df, x=attb1, y=attb2)

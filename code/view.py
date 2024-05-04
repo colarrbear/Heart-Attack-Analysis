@@ -205,7 +205,7 @@ class HeartDiseaseView(tk.Tk):
             self.left_attribute_combobox["values"] = column
             self.left_attribute_combobox.set(column[0])
 
-        elif selected == "Bar Charts":
+        if selected == "Bar Charts":
             self.enable_comboboxes()
 
             allowed_attributes = ["sex", "output", "fbs", "slp"]
@@ -225,7 +225,11 @@ class HeartDiseaseView(tk.Tk):
         selected_left = self.left_attribute_combobox.get()
         selected_right = self.right_attribute_combobox.get()
 
+        left_enabled = self.left_attribute_combobox["state"] == "normal"
+        right_enabled = self.right_attribute_combobox["state"] == "normal"
+
         # Check if both comboboxes have selections
+        # if selected_left and selected_right and left_enabled and right_enabled:
         if selected_left and selected_right:
             if selected_left == selected_right:
                 messagebox.showerror("Error", "Select different attributes.")
@@ -233,9 +237,21 @@ class HeartDiseaseView(tk.Tk):
         elif not selected_left:
             messagebox.showerror("Error",
                                  "Select an attribute for the left combobox.")
-        elif not selected_right:
+        elif not selected_right and right_enabled:
             messagebox.showerror("Error",
                                  "Select an attribute for the right combobox.")
+
+        # # Check if both comboboxes have selections
+        # if selected_left and selected_right:
+        #     if selected_left == selected_right:
+        #         messagebox.showerror("Error", "Select different attributes.")
+        #         self.right_attribute_combobox.set("")
+        # elif not selected_left:
+        #     messagebox.showerror("Error",
+        #                          "Select an attribute for the left combobox.")
+        # elif not selected_right:
+        #     messagebox.showerror("Error",
+        #                          "Select an attribute for the right combobox.")
 
     def create_quit_button(self):
         """ Button to gracefully exit"""
