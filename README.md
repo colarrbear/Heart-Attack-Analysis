@@ -29,6 +29,7 @@ git clone https://github.com/colarrbear/Heart-Attack-Analysis
 1. Change your directory to Heart-Attack-Analysis/code
 ```
 cd Heart-Attack-Analysis/code
+git checkout preview
 ```
 2. Create virtual environment using this command.
 ```
