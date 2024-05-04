@@ -38,6 +38,7 @@ class HeartDiseaseView(tk.Tk):
         # Home Tab
         self.home_tab = ttk.Frame(self.feature_tabs)
         self.feature_tabs.add(self.home_tab, text="Home")
+        self.init_home_tab()
 
         # Data Information Tab
         self.data_information_tab = ttk.Frame(self.feature_tabs)
@@ -53,6 +54,7 @@ class HeartDiseaseView(tk.Tk):
         # Graph Tab
         self.graph_tab = ttk.Frame(self.feature_tabs)
         self.feature_tabs.add(self.graph_tab, text="Graph")
+        self.init_advance_graph_tab()
 
     def init_data_information_tab(self):
         """Initialize the Data Information tab."""
@@ -217,16 +219,6 @@ class HeartDiseaseView(tk.Tk):
 
         elif selected == "Correlations":
             pass
-            # self.enable_comboboxes()
-            #
-            # allowed_attributes = ["age", "trtbps", "chol", "thalachh"]
-            # self.left_attribute_combobox["values"] = allowed_attributes
-            # self.left_attribute_combobox.set(allowed_attributes[0])
-            # self.left_attribute_combobox.bind("<<ComboboxSelected>>",
-            #                                   self.validate_comboboxes)
-            # self.right_attribute_combobox["values"] = allowed_attributes
-            # self.right_attribute_combobox.bind("<<ComboboxSelected>>",
-            #                                    self.validate_comboboxes)
 
     def validate_comboboxes(self, event):
         """Validate the selected attributes in the comboboxes."""
@@ -246,12 +238,16 @@ class HeartDiseaseView(tk.Tk):
                                  "Select an attribute for the right combobox.")
 
     def create_quit_button(self):
-        # Button to gracefully exit
+        """ Button to gracefully exit"""
         self.quit_button = ttk.Button(self, text="Quit", command=self.quit)
         self.quit_button.pack(side=tk.BOTTOM, padx=10, pady=10)
 
-    def init_home_page(self):
-        # This function can be expanded for additional content on the home page
+    def init_home_tab(self):
+        """This function can be expanded for additional content on the home page"""
+        pass
+
+    def init_advance_graph_tab(self):
+        """This function can be expanded for additional content on the home page"""
         pass
 
     def run(self):

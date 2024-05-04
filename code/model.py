@@ -26,11 +26,6 @@ class DataLoader:
         """for loading the data from a CSV file"""
         return self.data
 
-    # @classmethod
-    # def load_data(cls):
-    #     """for loading the data from a CSV file"""
-    #     return cls._instance
-
     @property
     def get_column_names(self):
         """Return the column names."""
