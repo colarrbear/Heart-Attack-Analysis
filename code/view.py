@@ -25,7 +25,7 @@ class HeartDiseaseView(tk.Tk):
 
     def configure_window(self):
         """Configure the window settings."""
-        self.geometry("1080x700")
+        self.geometry("1080x725")
         self.resizable(True, True)
 
     def init_components(self):
@@ -251,93 +251,88 @@ class HeartDiseaseView(tk.Tk):
 
     def init_home_tab(self):
         """Initialize the Home tab."""
-        # self.create_title_and_description()
-
         self.home_bg()
-        self.place_combobox_inside_photo()
-
-        # self.home_frame = tk.Frame(self.home_tab)
-        # self.home_frame.pack(fill=tk.BOTH, expand=True)
-
-        # label select attribute below to show description
-        # attribute_label = ttk.Label(self.home_tab, text="Get to know the data by selecting an attribute from the dropdown menu below.")
-        #
-        # attribute_label.pack(side="top", fill="x", padx=5, pady=5)
-
-        # # Create a combobox to select attributes
-        # self.attribute_combobox = ttk.Combobox(self.home_tab,
-        #                                        values=self.data_loader.get_column_names)
-        # # attribute_label.configure(font=("Arial", 14), foreground="skyblue")
-        # self.attribute_combobox.pack(side="top", fill="x", padx=5, pady=5)
-
-        # Load the image
-        # bg_image = Image.open("bg.jpg")
-        # bg_image = bg_image.resize((1000, 600), Image.Resampling.LANCZOS)
-        # self.bg_img = ImageTk.PhotoImage(bg_image)
-        #
-        # # Create a label with the background image and place it in the home frame
-        # self.bg_label = tk.Label(self.home_frame, image=self.bg_img)
-        # self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+        self.home_combobox_description()
 
     def home_bg(self):
-        # # Create a frame to contain the background image
-        # self.bg_frame = tk.Frame(self.home_tab)
-        # self.bg_frame.pack(fill=tk.BOTH, expand=True)
-        #
-        # # Load the image
-        # self.bg_image = Image.open("bgpng.png")
-        #
-        # # Convert the image to Tkinter format
-        # self.bg_image_tk = ImageTk.PhotoImage(self.bg_image)
-        #
-        # # Create a label with the background image
-        # self.background_label = tk.Label(self.bg_frame, image=self.bg_image_tk)
-        # self.background_label.place(x=0, y=0)
+        """Set the background image for the Home tab."""
         # Load the image
         bg_image = Image.open("bgpng.png")
         bg_image_tk = ImageTk.PhotoImage(bg_image)
 
         # Create a Canvas to display the image
-        self.canvas = tk.Canvas(self.home_tab, width=bg_image.width, height=bg_image.height)
+        self.canvas = tk.Canvas(self.home_tab, width=bg_image.width - 50, height=bg_image.height)
         self.canvas.pack()
 
         # Display the image on the Canvas
         self.canvas.create_image(0, 0, anchor=tk.NW, image=bg_image_tk)
-        self.canvas.image = bg_image_tk
+        self.canvas.image = bg_image_tk  # Keep a reference to the image
 
-    def place_combobox_inside_photo(self):
+    def home_combobox_description(self):
+        """Place a combobox inside the background image."""
         # Create a combobox to select attributes
-        self.attribute_combobox = ttk.Combobox(self.home_tab,
+        self.__home_attribute_combobox = ttk.Combobox(self.home_tab,
                                                values=self.data_loader.get_column_names)
-        self.attribute_combobox.place(x=425, y=450)
+        self.__home_attribute_combobox.place(x=425, y=450)
+        self.__home_attribute_combobox.set(self.data_loader.get_column_names[0])
+        self.__home_attribute_combobox.bind("<<ComboboxSelected>>",
+                                           self.display_attribute_description)
 
-    # def create_title_and_description(self):
-    #     """Create the title and description for the Home tab."""
-    #     title = "Welcome to GoodHeart!"
-    #     description = """
-    #     GoodHeart is an interactive Python GUI application designed to facilitate exploration of heart disease data. Utilizing Tkinter, this project offers users the ability to visualize, analyze, and derive insights from heart disease data in an intuitive manner. By adhering to object-oriented design principles, GoodHeart enables seamless user interaction, empowering users to delve deep into the dataset and uncover valuable insights.
-    #     """
-    #
-    #     # Create title
-    #     title_label = ttk.Label(self.home_tab, text=title, font=("Arial", 16, "bold"))
-    #     title_label.pack(pady=10)
-    #
-    #     # Create description
-    #     description_label = ttk.Label(self.home_tab, text=description, wraplength=800)
-    #     description_label.pack(pady=10)
+        # Create a label to display the description
+        self.__home_description_label = ttk.Label(self.canvas)
+        self.__home_description_label.config(wraplength=300)
 
     def display_attribute_description(self, event):
+        # print(selected_attribute)
         """Display the description of the selected attribute."""
-        selected_attribute = self.attribute_combobox.get()
         attribute_descriptions = {
-            "age": "Age of the patient",
-            "sex": "Gender of the patient (0 = female, 1 = male)",
-            # Add descriptions for other attributes
-        }
-        description = attribute_descriptions.get(selected_attribute,
-                                                 "Description not available")
-        messagebox.showinfo("Attribute Description",
-                            f"Attribute: {selected_attribute}\nDescription: {description}")
+            "age": "Age of the patient (in years)",
+            "sex": "Sex of the patient "
+                   "\n1 = male\n"
+                   "0 = female",
+            "cp": "Chest pain type\n"
+                  "Value 1: typical angina\n"
+                  "Value 2: atypical angina\n"
+                  "Value 3: non-anginal pain\n"
+                  "Value 4: asymptomatic",
+            "trtbps": "Resting blood pressure (in mm Hg on admission to the hospital)",
+            "chol": "Serum cholesterol in mg/dl",
+            "fbs": "Fasting blood sugar (> 120 mg/dl)\n"
+                   "1 = true"
+                   "\n0 = false",
+            "restecg": "Resting electrocardiographic results\n"
+                       "Value 0: normal\n"
+                       "Value 1: having ST-T wave abnormality (T wave inversions and/or ST elevation or depression of > 0.05 mV)\n"
+                       "Value 2: showing probable or definite left ventricular hypertrophy by Estes' criteria",
+            "thalachh": "Maximum heart rate achieved",
+            "exng": "Exercise induced angina\n"
+                    "1 = yes"
+                    "\n0 = no",
+            "oldpeak": "ST depression induced by exercise relative to rest",
+            "slope": "The slope of the peak exercise ST segment\n"
+                     "Value 1: upsloping\n"
+                     "Value 2: flat\n"
+                     "Value 3: downsloping",
+            "caa": "Number of major vessels (0-3) colored by fluoroscopy",
+            "thall": "Thal rate",
+            "output": "Target variable\n"
+                      "0 = Less chance"
+                      "\n1 = More chance of heart attack"}
+
+        # Update the description label with the description of the selected attribute
+        selected_attribute = self.__home_attribute_combobox.get()
+        description = attribute_descriptions[selected_attribute]
+
+        self.__home_description_label.config(text=description)
+        self.__home_description_label.config(font=("TkDefaultFont", 12))
+        # color = "#5A60A5" blue
+        color = "#F27A79"
+        self.__home_description_label.config(foreground=color)
+
+        x_center = (self.home_tab.winfo_reqwidth() - self.__home_description_label.winfo_reqwidth()) / 2
+
+        # Place the label at the center horizontally and at the fixed y-coordinate
+        self.__home_description_label.place(x=x_center, y=495)
 
     def init_advance_graph_tab(self):
         """This function can be expanded for additional content on the home page"""
@@ -347,40 +342,3 @@ class HeartDiseaseView(tk.Tk):
 
     def run(self):
         self.mainloop()
-
-# home data show column
-# # Create a Treeview widget
-#
-# home_frame = ttk.Frame(self.home_tab)
-# home_frame.pack(fill="both", expand=True)
-#
-# tree = ttk.Treeview(home_frame)
-# tree["columns"] = self.data_loader.get_column_names
-# tree.heading("#0", text="Index")
-#
-# # Calculate the initial width of each column
-# num_columns = len(self.data_loader.get_column_names)
-# column_width = int((self.winfo_width() - 20) / num_columns)
-# for column in self.data_loader.get_column_names:
-#     tree.heading(column, text=column)
-#     tree.column(column, width=column_width, anchor="center")
-#
-# data = self.data_loader.data.to_numpy().tolist()
-# for idx, row in enumerate(data, start=1):
-#     tree.insert("", "end", text=str(idx), values=row)
-#
-# # Add a scrollbar
-# scrollbar = ttk.Scrollbar(home_frame, orient="vertical",
-#                           command=tree.yview)
-# tree.configure(yscrollcommand=scrollbar.set)
-# scrollbar.pack(side="right", fill="y")
-#
-# # Pack the Treeview
-# tree.pack(side="left", fill="both", expand=True)
-#
-# max_width = self.winfo_screenwidth() - 100
-# max_height = self.winfo_screenheight() - 100
-# home_frame.pack_propagate(False)
-# home_frame.config(width=min(max_width,
-#                             tree.winfo_reqwidth() + scrollbar.winfo_reqwidth()),
-#                   height=min(max_height, tree.winfo_reqheight()))
