@@ -1,13 +1,15 @@
 """handles the User interface of the application"""
-#TODO:
+# TODO:
 # - nominal data (e.g. gender) must not compute in descriptive statatistics.
 # - (done) bar chart still received only one attribute. Not yet implemented for two attributes.
 # - (done) correlation still not yet implemented for one attribute.
 # - For "Graph" (superior graph) tab and Home tab is work in progress.
 
 import tkinter as tk
+import PIL
 from tkinter import ttk, messagebox
 from model import *
+from PIL import Image, ImageTk
 
 
 class HeartDiseaseView(tk.Tk):
@@ -16,13 +18,14 @@ class HeartDiseaseView(tk.Tk):
         self.controller = controller
         self.data_loader = controller.data
         self.plotter = PlotGraphs(self.data_loader)
-        self.title("Heart Disease Explorer")
+        self.title("GoodHeart")
         self.init_components()
         self.create_quit_button()
         self.configure_window()
 
     def configure_window(self):
         """Configure the window settings."""
+        self.geometry("1080x700")
         self.resizable(True, True)
 
     def init_components(self):
@@ -112,14 +115,15 @@ class HeartDiseaseView(tk.Tk):
                                            height=400)
         self.graph_canvas_frame.pack(side="bottom", fill="both", expand=True)
 
-
         # Create the menu box
-        menu_label = ttk.Label(self.statistics_tab, text="Select Visualization:")
+        menu_label = ttk.Label(self.statistics_tab,
+                               text="Select Visualization:")
         menu_label.pack(side="top", fill="x", padx=5, pady=5)
 
         menu_var = tk.StringVar()
         menu_var.set("Select Visualization")
-        menu_combobox = ttk.Combobox(self.statistics_tab, textvariable=menu_var,
+        menu_combobox = ttk.Combobox(self.statistics_tab,
+                                     textvariable=menu_var,
                                      values=["Bar Charts", "Histogram",
                                              "Correlations"])
         menu_combobox.pack(side="top", fill="x", padx=5, pady=5)
@@ -147,8 +151,9 @@ class HeartDiseaseView(tk.Tk):
                                            pady=5, expand=True)
 
         # Create the button to create the graph
-        create_graph_button = ttk.Button(self.statistics_tab, text="Plot Graph",
-                                            command=self.create_graph)
+        create_graph_button = ttk.Button(self.statistics_tab,
+                                         text="Plot Graph",
+                                         command=self.create_graph)
         create_graph_button.pack(side="right", padx=5, pady=5)
 
     def create_graph(self):
@@ -245,50 +250,137 @@ class HeartDiseaseView(tk.Tk):
         self.quit_button.pack(side=tk.BOTTOM, padx=10, pady=10)
 
     def init_home_tab(self):
-        """This function can be expanded for additional content on the home page"""
-        label = ttk.Label(self.home_tab, text="WIP: Home Page, see other tabs for content.")
-        label.pack()
-        # Create a Treeview widget
+        """Initialize the Home tab."""
+        # self.create_title_and_description()
 
-        home_frame = ttk.Frame(self.home_tab)
-        home_frame.pack(fill="both", expand=True)
+        self.home_bg()
+        self.place_combobox_inside_photo()
 
-        tree = ttk.Treeview(home_frame)
-        tree["columns"] = self.data_loader.get_column_names
-        tree.heading("#0", text="Index")
+        # self.home_frame = tk.Frame(self.home_tab)
+        # self.home_frame.pack(fill=tk.BOTH, expand=True)
 
-        # Calculate the initial width of each column
-        num_columns = len(self.data_loader.get_column_names)
-        column_width = int(( self.winfo_width() - 20) / num_columns)
-        for column in self.data_loader.get_column_names:
-            tree.heading(column, text=column)
-            tree.column(column, width=column_width, anchor="center")
+        # label select attribute below to show description
+        # attribute_label = ttk.Label(self.home_tab, text="Get to know the data by selecting an attribute from the dropdown menu below.")
+        #
+        # attribute_label.pack(side="top", fill="x", padx=5, pady=5)
 
-        data = self.data_loader.data.to_numpy().tolist()
-        for idx, row in enumerate(data, start=1):
-            tree.insert("", "end", text=str(idx), values=row)
+        # # Create a combobox to select attributes
+        # self.attribute_combobox = ttk.Combobox(self.home_tab,
+        #                                        values=self.data_loader.get_column_names)
+        # # attribute_label.configure(font=("Arial", 14), foreground="skyblue")
+        # self.attribute_combobox.pack(side="top", fill="x", padx=5, pady=5)
 
-        # Add a scrollbar
-        scrollbar = ttk.Scrollbar(home_frame, orient="vertical",
-                                  command=tree.yview)
-        tree.configure(yscrollcommand=scrollbar.set)
-        scrollbar.pack(side="right", fill="y")
+        # Load the image
+        # bg_image = Image.open("bg.jpg")
+        # bg_image = bg_image.resize((1000, 600), Image.Resampling.LANCZOS)
+        # self.bg_img = ImageTk.PhotoImage(bg_image)
+        #
+        # # Create a label with the background image and place it in the home frame
+        # self.bg_label = tk.Label(self.home_frame, image=self.bg_img)
+        # self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        # Pack the Treeview
-        tree.pack(side="left", fill="both", expand=True)
+    def home_bg(self):
+        # # Create a frame to contain the background image
+        # self.bg_frame = tk.Frame(self.home_tab)
+        # self.bg_frame.pack(fill=tk.BOTH, expand=True)
+        #
+        # # Load the image
+        # self.bg_image = Image.open("bgpng.png")
+        #
+        # # Convert the image to Tkinter format
+        # self.bg_image_tk = ImageTk.PhotoImage(self.bg_image)
+        #
+        # # Create a label with the background image
+        # self.background_label = tk.Label(self.bg_frame, image=self.bg_image_tk)
+        # self.background_label.place(x=0, y=0)
+        # Load the image
+        bg_image = Image.open("bgpng.png")
+        bg_image_tk = ImageTk.PhotoImage(bg_image)
 
-        max_width = self.winfo_screenwidth() - 100
-        max_height = self.winfo_screenheight() - 100
-        home_frame.pack_propagate(False)
-        home_frame.config(width=min(max_width,
-                                    tree.winfo_reqwidth() + scrollbar.winfo_reqwidth()),
-                          height=min(max_height, tree.winfo_reqheight()))
+        # Create a Canvas to display the image
+        self.canvas = tk.Canvas(self.home_tab, width=bg_image.width, height=bg_image.height)
+        self.canvas.pack()
 
+        # Display the image on the Canvas
+        self.canvas.create_image(0, 0, anchor=tk.NW, image=bg_image_tk)
+        self.canvas.image = bg_image_tk
+
+    def place_combobox_inside_photo(self):
+        # Create a combobox to select attributes
+        self.attribute_combobox = ttk.Combobox(self.home_tab,
+                                               values=self.data_loader.get_column_names)
+        self.attribute_combobox.place(x=425, y=450)
+
+    # def create_title_and_description(self):
+    #     """Create the title and description for the Home tab."""
+    #     title = "Welcome to GoodHeart!"
+    #     description = """
+    #     GoodHeart is an interactive Python GUI application designed to facilitate exploration of heart disease data. Utilizing Tkinter, this project offers users the ability to visualize, analyze, and derive insights from heart disease data in an intuitive manner. By adhering to object-oriented design principles, GoodHeart enables seamless user interaction, empowering users to delve deep into the dataset and uncover valuable insights.
+    #     """
+    #
+    #     # Create title
+    #     title_label = ttk.Label(self.home_tab, text=title, font=("Arial", 16, "bold"))
+    #     title_label.pack(pady=10)
+    #
+    #     # Create description
+    #     description_label = ttk.Label(self.home_tab, text=description, wraplength=800)
+    #     description_label.pack(pady=10)
+
+    def display_attribute_description(self, event):
+        """Display the description of the selected attribute."""
+        selected_attribute = self.attribute_combobox.get()
+        attribute_descriptions = {
+            "age": "Age of the patient",
+            "sex": "Gender of the patient (0 = female, 1 = male)",
+            # Add descriptions for other attributes
+        }
+        description = attribute_descriptions.get(selected_attribute,
+                                                 "Description not available")
+        messagebox.showinfo("Attribute Description",
+                            f"Attribute: {selected_attribute}\nDescription: {description}")
 
     def init_advance_graph_tab(self):
         """This function can be expanded for additional content on the home page"""
-        label = ttk.Label(self.graph_tab, text="WIP: Graph Page, see other tabs for content.")
+        label = ttk.Label(self.graph_tab,
+                          text="WIP: Graph Page, see other tabs for content.")
         label.pack()
 
     def run(self):
         self.mainloop()
+
+# home data show column
+# # Create a Treeview widget
+#
+# home_frame = ttk.Frame(self.home_tab)
+# home_frame.pack(fill="both", expand=True)
+#
+# tree = ttk.Treeview(home_frame)
+# tree["columns"] = self.data_loader.get_column_names
+# tree.heading("#0", text="Index")
+#
+# # Calculate the initial width of each column
+# num_columns = len(self.data_loader.get_column_names)
+# column_width = int((self.winfo_width() - 20) / num_columns)
+# for column in self.data_loader.get_column_names:
+#     tree.heading(column, text=column)
+#     tree.column(column, width=column_width, anchor="center")
+#
+# data = self.data_loader.data.to_numpy().tolist()
+# for idx, row in enumerate(data, start=1):
+#     tree.insert("", "end", text=str(idx), values=row)
+#
+# # Add a scrollbar
+# scrollbar = ttk.Scrollbar(home_frame, orient="vertical",
+#                           command=tree.yview)
+# tree.configure(yscrollcommand=scrollbar.set)
+# scrollbar.pack(side="right", fill="y")
+#
+# # Pack the Treeview
+# tree.pack(side="left", fill="both", expand=True)
+#
+# max_width = self.winfo_screenwidth() - 100
+# max_height = self.winfo_screenheight() - 100
+# home_frame.pack_propagate(False)
+# home_frame.config(width=min(max_width,
+#                             tree.winfo_reqwidth() + scrollbar.winfo_reqwidth()),
+#                   height=min(max_height, tree.winfo_reqheight()))
