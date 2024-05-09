@@ -22,9 +22,9 @@ git clone https://github.com/colarrbear/Heart-Attack-Analysis
 
 ### Create a virtual environment and install dependencies
 
-1. Change your directory to Heart-Attack-Analysis/code
+1. Change your directory to Heart-Attack-Analysis
 ```
-cd Heart-Attack-Analysis/code
+cd Heart-Attack-Analysis
 git checkout preview
 ```
 2. Create virtual environment using this command.
@@ -50,7 +50,12 @@ env\Scripts\activate
 pip install -r requirements.txt
 ```
 
-5. Run the application:
+5. Change your directory to Heart-Attack-Analysis
+```
+cd Heart-Attack-Analysis/code
+```
+
+6. Run the application:
 
 ```
 python main.py
