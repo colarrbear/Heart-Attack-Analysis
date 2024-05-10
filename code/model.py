@@ -313,3 +313,31 @@ class PlotGraphs:
         plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
         plt.show()
+
+    def plot_line_data_storytelling(self, parent_frame):
+        """Plot the trend of heart attacks"""
+        data = self.data.load_data
+
+        # Group the data by age, sex, and output (e.g., heart attack)
+        grouped_data = data.groupby(['age', 'sex'])[
+            'output'].mean().reset_index()
+
+        # Pivot the data to create a matrix with age as rows, sex as columns, and average output as values
+        pivot_data = grouped_data.pivot(index='age', columns='sex',
+                                        values='output')
+
+        plt.figure(figsize=(8, 5))
+        sns.lineplot(data=pivot_data, dashes=False, hue_order=[0, 1],
+                     palette={0: "#F27A79", 1: "#5A60A5"})
+        plt.title('Trend of Heart Attacks by Age and Sex')
+        plt.xlabel('Age')
+        plt.ylabel('Heart Attack Occurrence (Output)')
+        plt.legend(title='Sex', loc='upper right')
+
+        plt.grid(True)
+
+        # Embed the plot into the tkinter frame
+        canvas = FigureCanvasTkAgg(plt.gcf(), master=parent_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side="top")
+        return canvas.get_tk_widget()
