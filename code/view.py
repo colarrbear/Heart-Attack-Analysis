@@ -58,7 +58,6 @@ class HeartDiseaseView(tk.Tk):
         self.feature_tabs.add(self.graph_tab, text="Graph")
         self.init_advance_graph_tab()
 
-
     def init_home_tab(self):
         """Initialize the Home tab."""
         pass
@@ -405,7 +404,7 @@ class HeartDiseaseView(tk.Tk):
     def create_quit_button(self):
         """ Button to gracefully exit"""
         self.quit_button = ttk.Button(self, text="Quit", command=self.quit)
-        self.quit_button.pack(side=tk.BOTTOM, padx=10, pady=10)
+        self.quit_button.pack(side="bottom", padx=10, pady=10)
 
     def init_advance_graph_tab(self):
         """This function initializes the graph tab:
@@ -420,26 +419,27 @@ class HeartDiseaseView(tk.Tk):
 
         # Create the menu box for selecting the graph type
         graph_type_label = ttk.Label(self.graph_tab, text="Select Graph Type:")
-        graph_type_label.grid(row=1, column=0, padx=5, pady=5, sticky="w")
+        graph_type_label.grid(row=0, column=0, padx=5, pady=5, sticky="w")
 
         self.graph_type_combobox = ttk.Combobox(self.graph_tab,
                                                 values=["Distribution Graph",
-                                                        "Scatter Polt",
-                                                        "Bar Charts"])
+                                                        "Scatter Plot",
+                                                        ])
         self.graph_type_combobox.set("Distribution Graph")
-        self.graph_type_combobox.grid(row=1, column=1, columnspan=1, padx=5,
-                                      pady=5,sticky="ew")
+        self.graph_type_combobox.grid(row=0, column=1, columnspan=1, padx=5,
+                                      pady=5, sticky="ew")
         self.graph_type_combobox.columnconfigure(0, weight=1)
+        self.graph_type_combobox.bind("<<ComboboxSelected>>", self.selected_graph_type_handler)
 
         # Create the menu box for the 1st attribute
         adv_attr1_label = ttk.Label(self.graph_tab,
                                     text="Select 1st Attribute:")
-        adv_attr1_label.grid(row=0, column=0, padx=5, pady=5, sticky="w")
+        adv_attr1_label.grid(row=1, column=0, padx=5, pady=5, sticky="w")
 
-        self.adv_attr1_combobox = ttk.Combobox(self.graph_tab,
-                                               values=self.data_loader.get_column_names)
+        # Create the menu box for the 1st attribute
+        self.adv_attr1_combobox = ttk.Combobox(self.graph_tab)
         self.adv_attr1_combobox.set(self.data_loader.get_column_names[0])
-        self.adv_attr1_combobox.grid(row=0, column=1, columnspan=1, padx=5,
+        self.adv_attr1_combobox.grid(row=1, column=1, columnspan=1, padx=5,
                                      pady=5,
                                      sticky="ew")
         self.adv_attr1_combobox.columnconfigure(0, weight=1)
@@ -448,12 +448,13 @@ class HeartDiseaseView(tk.Tk):
         # Create the menu box for the 2nd attribute
         adv_attr2_label = ttk.Label(self.graph_tab,
                                     text="Select 2nd Attribute:")
-        adv_attr2_label.grid(row=0, column=3, padx=5, pady=5, sticky="w")
+        adv_attr2_label.grid(row=1, column=3, padx=5, pady=5, sticky="w")
+        adv_attr2_label.bind("<<ComboboxSelected>>",
+                             self.update_right_slider_value)
 
-        self.adv_attr2_combobox = ttk.Combobox(self.graph_tab,
-                                               values=self.data_loader.get_column_names)
+        self.adv_attr2_combobox = ttk.Combobox(self.graph_tab)
         self.adv_attr2_combobox.set(self.data_loader.get_column_names[0])
-        self.adv_attr2_combobox.grid(row=0, column=4, columnspan=1, padx=5,
+        self.adv_attr2_combobox.grid(row=1, column=4, columnspan=1, padx=5,
                                      pady=5,
                                      sticky="ew")
         self.adv_attr2_combobox.columnconfigure(0, weight=1)
@@ -466,7 +467,7 @@ class HeartDiseaseView(tk.Tk):
 
         adv_right_range_label = ttk.Label(self.graph_tab,
                                           text="Select Range for 2nd attribute:")
-        adv_right_range_label.grid(row=2, column=2, padx=5, pady=5, sticky="w")
+        adv_right_range_label.grid(row=2, column=3, padx=5, pady=5, sticky="w")
 
         # Create range sliders for attribute selection
         self.adv_left_range_slider = ttk.Scale(self.graph_tab, from_=0, to=100,
@@ -478,35 +479,79 @@ class HeartDiseaseView(tk.Tk):
         self.adv_right_range_slider = ttk.Scale(self.graph_tab, from_=0,
                                                 to=100, length=200,
                                                 command=self.update_right_slider_value)
-        self.adv_right_range_slider.grid(row=2, column=3, padx=5, pady=5,
+        self.adv_right_range_slider.grid(row=2, column=4, padx=5, pady=5,
                                          sticky="w")
 
         # Create labels to display current range slider values
         self.adv_left_range_value_label = ttk.Label(self.graph_tab, text="0")
-        self.adv_left_range_value_label.grid(row=2, column=1, padx=5, pady=5,
-                                             sticky="e")
-
         self.adv_right_range_value_label = ttk.Label(self.graph_tab, text="0")
-        self.adv_right_range_value_label.grid(row=2, column=3, padx=5, pady=5,
-                                              sticky="e")
 
         # Button to clear range
         clear_button = ttk.Button(self.graph_tab, text="Clear Range",
                                   command=self.clear_range)
-        clear_button.grid(row=3, column=0, sticky="ew", padx=5, pady=5)
+        clear_button.grid(row=3, column=0, columnspan=1, padx=5, pady=5)
+
+        self.__create_graph_button = ttk.Button(self.graph_tab,
+                                                text="Plot Graph",
+                                                command=self.graph_tab_plot_graph)
+        self.__create_graph_button.grid(row=3, column=0, padx=5, pady=5,
+                                        sticky="w")
 
         # Create check button to enable attribute selection
         adv_check_label = ttk.Label(self.graph_tab, text="Choose Range?")
-        adv_check_label.grid(row=1, column=3, padx=5, pady=5, sticky="w")
+        adv_check_label.grid(row=0, column=3, padx=5, pady=5, sticky="w")
 
         self.adv_check_var = tk.BooleanVar()
         adv_check_button = ttk.Checkbutton(self.graph_tab,
                                            variable=self.adv_check_var,
                                            command=self.toggle_attribute_selection)
-        adv_check_button.grid(row=1, column=4, padx=5, pady=5, sticky="w")
+        adv_check_button.grid(row=0, column=4, padx=5, pady=5, sticky="w")
 
         # Initially disable range sliders
         self.toggle_attribute_selection()
+
+    def selected_graph_type_handler(self, event):
+        """Handle the selection of a graph type in the Graph tab."""
+        graph_selected_graph = self.graph_type_combobox.get()
+        if graph_selected_graph == "Distribution Graph":
+            self.adv_attr1_combobox["values"] = "age"
+            self.adv_attr1_combobox.set("age")
+            self.adv_attr2_combobox["values"] = "thalachh"
+            self.adv_attr2_combobox.set("thalachh")
+
+        elif graph_selected_graph == "Scatter Plot":
+            scatter_attributes = ["chol", "exng", "trtbps", "thalachh", "caa"]
+            self.adv_attr1_combobox["values"] = scatter_attributes
+            self.adv_attr1_combobox.set(scatter_attributes[0])
+            self.adv_attr1_combobox.bind("<<ComboboxSelected>>",
+                                         self.graph_validate_comboboxes)
+            # if selected already on the first attribute,
+            # the second attribute will not be the same as the first attribute.
+            self.adv_attr2_combobox["values"] = scatter_attributes
+            self.adv_attr2_combobox.bind("<<ComboboxSelected>>",
+                                         self.graph_validate_comboboxes)
+
+
+    def graph_validate_comboboxes(self, event):
+        """Validate the selected attributes in the comboboxes."""
+        selected_left = self.adv_attr1_combobox.get()
+        selected_right = self.adv_attr2_combobox.get()
+
+        left_enabled = self.adv_attr1_combobox["state"] == "normal"
+        right_enabled = self.adv_attr2_combobox["state"] == "normal"
+
+        # Check if both comboboxes have selections
+        if selected_left and selected_right:
+            if selected_left == selected_right:
+                messagebox.showerror("Error", "Select different attributes.")
+                self.adv_attr2_combobox.set("")
+        elif not selected_left:
+            messagebox.showerror("Error",
+                                 "Select an attribute for the left combobox.")
+        elif not selected_right and right_enabled:
+            messagebox.showerror("Error",
+                                 "Select an attribute for the right combobox.")
+
 
     def clear_range(self):
         """Function to clear the range sliders"""
@@ -519,23 +564,66 @@ class HeartDiseaseView(tk.Tk):
         self.adv_left_range_slider.config(state=state)
         self.adv_right_range_slider.config(state=state)
         # Show or hide range slider value labels based on the checkbox state
-        self.adv_left_range_value_label.grid(row=2, column=1, padx=1, pady=1,
+        self.adv_left_range_value_label.grid(row=3, column=1, padx=1, pady=1,
                                              sticky="w")
-        self.adv_right_range_value_label.grid(row=2, column=3, padx=1, pady=1,
+        self.adv_right_range_value_label.grid(row=3, column=4, padx=1, pady=1,
                                               sticky="w")
 
-    def update_left_slider_value(self, value):
+    def update_left_slider_value(self, event):
         """Update the label to display the current value of the left range slider"""
-        self.adv_left_range_value_label.config(text=str(round(float(value))))
+        selected_attribute = self.adv_attr1_combobox.get()
+        max_value = self.controller.get_max_value(selected_attribute)
+        self.adv_left_range_slider.config(to=max_value)
+        self.adv_left_range_value_label.config(
+            text=str(self.adv_left_range_slider.get()))
 
-    def update_right_slider_value(self, value):
+        # print(selected_attribute)
+        # print(max_value)
+
+    def update_right_slider_value(self, event):
         """Update the label to display the current value of the right range slider"""
-        self.adv_right_range_value_label.config(text=str(round(float(value))))
+        selected_attribute = self.adv_attr2_combobox.get()
+        max_value = self.controller.get_max_value(selected_attribute)
+        self.adv_right_range_slider.config(to=max_value)
+        self.adv_right_range_value_label.config(
+            text=str(self.adv_right_range_slider.get()))
 
-    def plot_graph(self):
+    def graph_tab_plot_graph(self):
         """Function to plot the graph based on selected attributes and ranges"""
-        # Implement your graph plotting logic here using the selected attributes and ranges
-        pass
+        # Get the selected graph type
+        selected_graph = self.graph_type_combobox.get()
+
+        # Get the selected attributes
+        selected_left = self.adv_attr1_combobox.get()
+        selected_right = self.adv_attr2_combobox.get()
+
+        # Get the selected ranges
+        left_range = self.adv_left_range_slider.get()
+        right_range = self.adv_right_range_slider.get()
+
+        # Clear the existing graph canvas
+        for widget in self.__graph_canvas_frame.winfo_children():
+            widget.destroy()
+
+        # Determine if range selection is enabled
+        if self.adv_check_var.get():  # If checkbox is checked
+            # Plot the graph based on the selected graph type and range
+            if selected_graph == "Distribution Graph":
+                self.plotter.plot_distribution(selected_left, selected_right, left_range, right_range, self.__graph_canvas_frame)
+            elif selected_graph == "Scatter Plot":
+                pass
+                # self.plotter.plot_scatter(selected_left, selected_right,
+                #                           left_range, right_range,
+                #                           self.__graph_canvas_frame)
+            elif selected_graph == "Pie Charts":
+                pass
+                # self.plotter.plot_pie_chart(selected_left, left_range,
+                #                             self.__graph_canvas_frame)
+        else:  # If checkbox is not checked, use all data
+            # Plot the graph without considering range
+            if selected_graph == "Distribution Graph":
+                self.plotter.plot_distribution(selected_left, selected_right, None, None, self.__graph_canvas_frame)
+                print('test')
 
     def run(self):
         self.mainloop()

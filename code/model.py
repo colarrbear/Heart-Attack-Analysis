@@ -8,6 +8,7 @@ from tkinter import messagebox
 import seaborn as sns
 import pandas as pd
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 matplotlib.use('TkAgg')
 
 
@@ -67,14 +68,18 @@ class DataLoader:
             return None  # Unknown type or attribute not found
 
 
-
 class PlotGraphs:
     """
     Model for tabs.
     Hold the data and return the calculated requested data.
     """
+
     def __init__(self, input_data):
         self.data = input_data
+
+    def get_max_value(self, attribute):
+        """returns the maximum value for the given attribute"""
+        return self.data.load_data[attribute].max()
 
     def summary_statistics(self):
         """returns summary statistics for the data"""
@@ -122,7 +127,6 @@ class PlotGraphs:
                 }
 
         return custom_summary
-
 
     def calculate_correlations(self):
         """returns correlation values for the data"""
@@ -196,4 +200,142 @@ class PlotGraphs:
         canvas.draw()
         canvas.get_tk_widget().pack(side=tk.BOTTOM)
 
+        return canvas.get_tk_widget()
+
+    def plot_distribution(self, attb1, attb2, range_attb1, range_attb2,
+                          parent_frame) -> tk.Widget:
+        """Plot a distribution plot for the given attributes within the specified ranges."""
+        df = self.data.load_data
+
+        if attb1 is None or attb2 == None:
+            # Filter data based on specified ranges
+            filtered_df = df[
+                (df[attb1] >= range_attb1[0]) & (df[attb1] <= range_attb1[1]) &
+                (df[attb2] >= range_attb2[0]) & (df[attb2] <= range_attb2[1])]
+
+            fig, ax = plt.subplots(figsize=(6, 4))
+
+            # Plot distribution of attribute 1
+            sns.kdeplot(data=filtered_df[attb1], shade=True, color="b",
+                        label=f"{attb1}", ax=ax)
+
+            # Plot distribution of attribute 2
+            sns.kdeplot(data=filtered_df[attb2], shade=True, color="r",
+                        label=f"{attb2}", ax=ax)
+
+            plt.title(f"Distribution Plot for {attb1} and {attb2}")
+            plt.xlabel("Attribute Values")
+            plt.ylabel("Density")
+            plt.legend()
+
+            # Embed the plot into the tkinter frame
+            canvas = FigureCanvasTkAgg(fig, master=parent_frame)
+            canvas.draw()
+            canvas.get_tk_widget().pack(side=tk.BOTTOM)
+            return canvas.get_tk_widget()
+        else:
+            # plot without filtering
+            fig, ax = plt.subplots(figsize=(6, 4))
+
+            # Plot distribution of attribute 1
+            sns.kdeplot(data=df[attb1], shade=True, color="#5A60A5",
+                        label=f"{attb1}", ax=ax)
+
+            # Plot distribution of attribute 2
+            sns.kdeplot(data=df[attb2], shade=True, color="#F27A79",
+                        label=f"{attb2}", ax=ax)
+
+            plt.title(f"Distribution Plot for {attb1} and {attb2}")
+            plt.xlabel("Attribute Values")
+            plt.ylabel("Density")
+            plt.legend()
+
+            # Embed the plot into the tkinter frame
+            canvas = FigureCanvasTkAgg(fig, master=parent_frame)
+            canvas.draw()
+            canvas.get_tk_widget().pack(side=tk.BOTTOM)
+            return canvas.get_tk_widget()
+
+
+
+
+    # def plot_scatter(self, attb1, attb2, parent_frame) -> tk.Widget:
+    #     """for plotting a scatter plot for the given attributes"""
+    #     df = self.data.load_data
+    #     fig, ax = plt.subplots(figsize=(6, 4))
+    #     sns.scatterplot(data=df, x=attb1, y=attb2, hue='output')
+    #     plt.title(f"Scatter Plot for {attb1} and {attb2}")
+    #     # Embed the plot into the tkinter frame
+    #     canvas = FigureCanvasTkAgg(fig, master=parent_frame)
+    #     canvas.draw()
+    #     canvas.get_tk_widget().pack(side=tk.BOTTOM)
+    #     return canvas.get_tk_widget()
+    def plot_scatter(self, attb1, attb2, range_attb1, range_attb2,
+                     parent_frame) -> tk.Widget:
+        """Plot a scatter plot for the given attributes within the specified ranges."""
+        df = self.data.load_data
+
+        # Filter data based on specified ranges
+        filtered_df = df[
+            (df[attb1] >= range_attb1[0]) & (df[attb1] <= range_attb1[1]) &
+            (df[attb2] >= range_attb2[0]) & (df[attb2] <= range_attb2[1])]
+
+        fig, ax = plt.subplots(figsize=(6, 4))
+        sns.scatterplot(data=filtered_df, x=attb1, y=attb2, hue='output')
+        plt.title(f"Scatter Plot for {attb1} and {attb2}")
+
+        # Embed the plot into the tkinter frame
+        canvas = FigureCanvasTkAgg(fig, master=parent_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side="bottom")
+        return canvas.get_tk_widget()
+
+    # def plot_boxplot(self, attb1, attb2, parent_frame) -> tk.Widget:
+    #     """for plotting a box plot for the given attributes"""
+    #     df = self.data.load_data
+    #     fig, ax = plt.subplots(figsize=(6, 4))
+    #     sns.boxplot(data=df, x=attb1, y=attb2)
+    #     plt.title(f"Box Plot for {attb1} and {attb2}")
+    #     # Embed the plot into the tkinter frame
+    #     canvas = FigureCanvasTkAgg(fig, master=parent_frame)
+    #     canvas.draw()
+    #     canvas.get_tk_widget().pack(side=tk.BOTTOM)
+    #     return canvas.get_tk_widget()
+
+    def plot_boxplot(self, attb1, attb2, range_attb1, range_attb2,
+                     parent_frame) -> tk.Widget:
+        """Plot a scatter plot for the given attributes within the specified ranges."""
+        df = self.data.load_data
+        # Filter data based on specified ranges
+        filtered_df = df[
+            (df[attb1] >= range_attb1[0]) & (df[attb1] <= range_attb1[1]) &
+            (df[attb2] >= range_attb2[0]) & (df[attb2] <= range_attb2[1])]
+
+        fig, ax = plt.subplots(figsize=(6, 4))
+        sns.boxplot(data=filtered_df, x=attb1, y=attb2)
+        plt.title(f"Box Plot for {attb1} and {attb2}")
+
+        # Embed the plot into the tkinter frame
+        canvas = FigureCanvasTkAgg(fig, master=parent_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side="bottom")
+        return canvas.get_tk_widget()
+
+    def plot_pie_chart(self, attb1, attb2, range_attb1, range_attb2,
+                       parent_frame) -> tk.Widget:
+        """for plotting a pie chart for the given attribute"""
+        df = self.data.load_data
+
+        filtered_df = df[
+            (df[attb1] >= range_attb1[0]) & (df[attb1] <= range_attb1[1]) &
+            (df[attb2] >= range_attb2[0]) & (df[attb2] <= range_attb2[1])]
+
+        fig, ax = plt.subplots(figsize=(6, 4))
+        filtered_df[attb1].value_counts().plot.pie(autopct='%1.1f%%')
+        plt.title(f"Pie Chart for {attb1}")
+
+        # Embed the plot into the tkinter frame
+        canvas = FigureCanvasTkAgg(fig, master=parent_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side="bottom")
         return canvas.get_tk_widget()
