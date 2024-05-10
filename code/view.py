@@ -63,8 +63,10 @@ class HeartDiseaseView(tk.Tk):
         self.data_info_bg()
 
         # Add a label for the combobox in Data Information tab
-        attributes_label = ttk.Label(self.data_information_tab, text="Select Attribute:")
-        attributes_label.place(x=500, y=260)
+        self.__attributes_label = ttk.Label(self.data_information_tab, text="Select Attribute:")
+        self.__attributes_label.config(font=("TkDefaultFont", 13))
+        self.__attributes_label.config(foreground="#F27A79")
+        self.__attributes_label.place(x=500, y=260)
 
         column = self.data_loader.get_column_names
 
@@ -79,7 +81,9 @@ class HeartDiseaseView(tk.Tk):
         self.canvas.bind("<Configure>", self.data_info_on_canvas_resize)
 
     def data_info_on_canvas_resize(self, event):
-        """Adjust the size and position of the Combobox when the canvas is resized."""
+        """Adjust the size and position of the components (in data infomation tab)
+        when the canvas is resized."""
+
         # Get the new size of the canvas
         canvas_width = event.width
         canvas_height = event.height
@@ -88,21 +92,11 @@ class HeartDiseaseView(tk.Tk):
         self.attribute_combobox.place(x=canvas_width / 2 - 70, y=canvas_height / 2)
         self.attribute_combobox.config(width=canvas_width // 50)
 
-        # # Add a label for the combobox in Data Information tab
-        # attributes_label = ttk.Label(self.data_information_tab,
-        #                              text="Select Attribute:")
-        # attributes_label.pack(side="top", fill="x", padx=5, pady=5)
-        #
-        # column = self.data_loader.get_column_names
-        #
-        # # Add a combobox to select attributes in Data Information tab
-        # self.attribute_combobox = ttk.Combobox(self.data_information_tab,
-        #                                        values=[i for i in column])
-        # self.attribute_combobox.pack(side="top", fill="x", padx=5, pady=5)
-        # self.attribute_combobox.set(column[0])  # Set default value
-        # self.attribute_combobox.bind("<<ComboboxSelected>>", lambda
-        #     event: self.data_info_handle_attribute_selection(
-        #     self.attribute_combobox.get()))
+        # Update the size and position of the Label
+        self.__attributes_label.place(x=canvas_width / 2 - 20, y=canvas_height / 2 - 30)
+
+        # Update the size and position of the Output Frame
+        self.output_frame.place(x=canvas_width / 2 - 20, y=canvas_height / 2 + 30)
 
     def data_info_bg(self):
         """Set the background image for the Home tab."""
@@ -124,7 +118,6 @@ class HeartDiseaseView(tk.Tk):
 
         # Add a frame within the canvas for output
         self.output_frame = tk.Frame(self.canvas)
-        # self.output_frame.place(relx=0.5, rely=0.5, anchor="n")
         self.output_frame.place(x=500, y=350)
 
     def data_info_handle_attribute_selection(self, selected_attribute):
@@ -148,23 +141,6 @@ class HeartDiseaseView(tk.Tk):
             color = "#F27A79"
             label.config(font=("TkDefaultFont", 13), foreground=color)
             label.pack(side="top", fill="x", padx=5, pady=2, expand=True, anchor="center")
-        # for stat, value in data_info.items():
-        #     # Check if a label for this statistic already exists
-        #     existing_label = None
-        #     for child in self.data_information_tab.winfo_children():
-        #         if isinstance(child, ttk.Label) and child.cget(
-        #                 "text").startswith(stat + ":"):
-        #             existing_label = child
-        #             break
-        #
-        #     # If an existing label exists, update its text
-        #     if existing_label:
-        #         existing_label.config(text=f"{stat}: {value}")
-        #     # Otherwise, create a new label
-        #     else:
-        #         stat_label = ttk.Label(self.data_information_tab,
-        #                                text=f"{stat}: {value}")
-        #         stat_label.pack(side="top", fill="x", padx=5, pady=2)
 
     def init_statistics_tab(self):
         """Initialize the Statistics tab."""
@@ -334,14 +310,20 @@ class HeartDiseaseView(tk.Tk):
         self.canvas.image = bg_image_tk  # Keep a reference to the image
 
     def home_on_canvas_resize(self, event):
-        """Adjust the size and position of the Combobox when the canvas is resized."""
+        """Adjust the size and position of the components (of home tab) when the canvas is resized."""
         # Get the new size of the canvas
         canvas_width = event.width
         canvas_height = event.height
 
         # Update the size and position of the Combobox
-        self.__home_attribute_combobox.place(x=canvas_width / 2 -100, y=canvas_height / 1.375)
+        self.__home_attribute_combobox.place(x=canvas_width / 2 - 100, y=canvas_height / 1.375)
         self.__home_attribute_combobox.config(width=canvas_width // 50)
+
+        # Update the size and position of the Label
+        # x_center = (self.home_tab.winfo_reqwidth() - self.__home_description_label.winfo_reqwidth()) / 2
+        # x_center = canvas_width / 2 - 100
+        # self.__home_description_label.place(x=canvas_width / 2 - 125, y=canvas_height / 1.375 + 45)
+        # self.__home_description_label.place(x=x_center, y=canvas_height / 1.375 + 45)
 
     def home_combobox_description(self):
         """Place a combobox inside the background image."""
@@ -354,8 +336,10 @@ class HeartDiseaseView(tk.Tk):
                                            self.display_attribute_description)
 
         # Create a label to display the description
-        self.__home_description_label = ttk.Label(self.canvas)
-        self.__home_description_label.config(wraplength=300)
+        # self.__home_description_label = ttk.Label(self.canvas)
+        # self.__home_description_label.config(wraplength=300)
+
+
 
     def display_attribute_description(self, event):
         # print(selected_attribute)
@@ -398,16 +382,42 @@ class HeartDiseaseView(tk.Tk):
         selected_attribute = self.__home_attribute_combobox.get()
         description = attribute_descriptions[selected_attribute]
 
-        self.__home_description_label.config(text=description)
-        self.__home_description_label.config(font=("TkDefaultFont", 12))
-        # color = "#5A60A5" blue
-        color = "#F27A79"
-        self.__home_description_label.config(foreground=color)
+        # self.__home_description_label.config(text=description)
+        # self.__home_description_label.config(font=("TkDefaultFont", 12))
+        # # color = "#5A60A5" blue
+        # color = "#F27A79"
+        # self.__home_description_label.config(foreground=color)
 
-        x_center = (self.home_tab.winfo_reqwidth() - self.__home_description_label.winfo_reqwidth()) / 2
+        # create pop-up window for description
 
-        # Place the label at the center horizontally and at the fixed y-coordinate
-        self.__home_description_label.place(x=x_center, y=495)
+        # Check if a description window already exists, then destroy it
+        for widget in self.winfo_children():
+            if isinstance(widget, tk.Toplevel) and widget.title() == "GoodHeart Description":
+                widget.destroy()
+
+        # Create a Toplevel window for the description
+        description_window = tk.Toplevel(self)
+        description_window.title("GoodHeart Description")
+
+        # Set the geometry of the description window
+        description_window_width = 400
+        description_window_height = 200
+        x_coordinate = self.winfo_x() + 100
+        y_coordinate = self.winfo_y() + 100
+
+        description_window.geometry(
+            f"{description_window_width}x{description_window_height}+{x_coordinate}+{y_coordinate}")
+
+        # Label with the description text for the selected attribute
+        description_label = tk.Label(description_window, text=description,
+                                     wraplength=280)
+        description_label.config(font=("TkDefaultFont", 12))
+        description_label.config(foreground="#F27A79")
+        description_label.pack(pady=20)
+
+        # Button to close the popup window
+        close_button = tk.Button(description_window, text="Quit", command=description_window.destroy)
+        close_button.pack(pady=10, side="bottom")
 
     def init_advance_graph_tab(self):
         """This function can be expanded for additional content on the home page"""
