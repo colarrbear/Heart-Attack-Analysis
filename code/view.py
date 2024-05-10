@@ -76,17 +76,17 @@ class HeartDiseaseView(tk.Tk):
             event: self.data_info_handle_attribute_selection(
             self.attribute_combobox.get()))
 
-        self.canvas.bind("<Configure>", self.on_canvas_resize)
+        self.canvas.bind("<Configure>", self.data_info_on_canvas_resize)
 
-    def on_canvas_resize(self, event):
+    def data_info_on_canvas_resize(self, event):
         """Adjust the size and position of the Combobox when the canvas is resized."""
         # Get the new size of the canvas
         canvas_width = event.width
         canvas_height = event.height
 
         # Update the size and position of the Combobox
-        self.canvas.coords(self.attribute_combobox, canvas_width // 2,
-                           canvas_height // 4)
+        self.attribute_combobox.place(x=canvas_width / 2 - 70, y=canvas_height / 2)
+        self.attribute_combobox.config(width=canvas_width // 50)
 
         # # Add a label for the combobox in Data Information tab
         # attributes_label = ttk.Label(self.data_information_tab,
@@ -117,7 +117,6 @@ class HeartDiseaseView(tk.Tk):
         # Create a Canvas to display the image
         self.canvas = tk.Canvas(self.data_information_tab, width=canvas_width, height=canvas_height)
         self.canvas.pack(fill="both", expand=True)
-        self.canvas.pack()
 
         # Display the image on the Canvas
         self.canvas.create_image(0, 0, anchor=tk.NW, image=data_info_bg_image_tk)
@@ -328,9 +327,21 @@ class HeartDiseaseView(tk.Tk):
         self.canvas.pack(fill="both", expand=True)
         self.canvas.pack()
 
+        self.canvas.bind("<Configure>", self.home_on_canvas_resize)
+
         # Display the image on the Canvas
         self.canvas.create_image(0, 0, anchor=tk.NW, image=bg_image_tk)
         self.canvas.image = bg_image_tk  # Keep a reference to the image
+
+    def home_on_canvas_resize(self, event):
+        """Adjust the size and position of the Combobox when the canvas is resized."""
+        # Get the new size of the canvas
+        canvas_width = event.width
+        canvas_height = event.height
+
+        # Update the size and position of the Combobox
+        self.__home_attribute_combobox.place(x=canvas_width / 2 -100, y=canvas_height / 1.375)
+        self.__home_attribute_combobox.config(width=canvas_width // 50)
 
     def home_combobox_description(self):
         """Place a combobox inside the background image."""
