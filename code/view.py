@@ -423,8 +423,7 @@ class HeartDiseaseView(tk.Tk):
 
         self.graph_type_combobox = ttk.Combobox(self.graph_tab,
                                                 values=["Distribution Graph",
-                                                        "Scatter Plot",
-                                                        ])
+                                                        "Scatter Plot",])
         self.graph_type_combobox.set("Distribution Graph")
         self.graph_type_combobox.grid(row=0, column=1, columnspan=1, padx=5,
                                       pady=5, sticky="ew")
@@ -453,7 +452,7 @@ class HeartDiseaseView(tk.Tk):
                              self.update_right_slider_value)
 
         self.adv_attr2_combobox = ttk.Combobox(self.graph_tab)
-        self.adv_attr2_combobox.set(self.data_loader.get_column_names[0])
+        # self.adv_attr2_combobox.set(self.data_loader.get_column_names[1])
         self.adv_attr2_combobox.grid(row=1, column=4, columnspan=1, padx=5,
                                      pady=5,
                                      sticky="ew")
@@ -552,7 +551,6 @@ class HeartDiseaseView(tk.Tk):
             messagebox.showerror("Error",
                                  "Select an attribute for the right combobox.")
 
-
     def clear_range(self):
         """Function to clear the range sliders"""
         self.adv_left_range_slider.set(0)
@@ -610,6 +608,7 @@ class HeartDiseaseView(tk.Tk):
             # Plot the graph based on the selected graph type and range
             if selected_graph == "Distribution Graph":
                 self.plotter.plot_distribution(selected_left, selected_right, left_range, right_range, self.__graph_canvas_frame)
+                print('range')
             elif selected_graph == "Scatter Plot":
                 pass
                 # self.plotter.plot_scatter(selected_left, selected_right,
@@ -623,7 +622,6 @@ class HeartDiseaseView(tk.Tk):
             # Plot the graph without considering range
             if selected_graph == "Distribution Graph":
                 self.plotter.plot_distribution(selected_left, selected_right, None, None, self.__graph_canvas_frame)
-                print('test')
 
     def run(self):
         self.mainloop()
