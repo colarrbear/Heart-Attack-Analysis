@@ -608,20 +608,20 @@ class HeartDiseaseView(tk.Tk):
             # Plot the graph based on the selected graph type and range
             if selected_graph == "Distribution Graph":
                 self.plotter.plot_distribution(selected_left, selected_right, left_range, right_range, self.__graph_canvas_frame)
-                print('range')
             elif selected_graph == "Scatter Plot":
-                pass
-                # self.plotter.plot_scatter(selected_left, selected_right,
-                #                           left_range, right_range,
-                #                           self.__graph_canvas_frame)
+                self.plotter.plot_scatter(selected_left, selected_right, left_range, right_range, self.__graph_canvas_frame)
             elif selected_graph == "Pie Charts":
                 pass
                 # self.plotter.plot_pie_chart(selected_left, left_range,
                 #                             self.__graph_canvas_frame)
-        else:  # If checkbox is not checked, use all data
+        else:  # If checkbox is not checked
             # Plot the graph without considering range
             if selected_graph == "Distribution Graph":
                 self.plotter.plot_distribution(selected_left, selected_right, None, None, self.__graph_canvas_frame)
+            elif selected_graph == "Scatter Plot":
+                self.plotter.plot_scatter(selected_left, selected_right, None, None, self.__graph_canvas_frame)
+            elif selected_graph == "Pie Charts":
+                pass
 
     def run(self):
         self.mainloop()

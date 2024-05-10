@@ -47,25 +47,25 @@ class DataLoader:
         """returns the data types of the columns"""
         return self.data.dtypes
 
-    @staticmethod
-    def get_data_categories(atb):
-        """return types: nominal, ordinal, numerical
-        - nominal are sex, fbs
-        - ordinal are cp, restecg, exng, slp
-        - numerical are age, trtbps, chol, thalachh, oldpeak, caa, thall"""
-        nominal_attributes = ["sex", "fbs"]
-        ordinal_attributes = ["cp", "restecg", "exng", "slp"]
-        numerical_attributes = ["age", "trtbps", "chol", "thalachh", "oldpeak",
-                                "caa", "thall"]
-
-        if atb in nominal_attributes:
-            return "nominal"
-        elif atb in ordinal_attributes:
-            return "ordinal"
-        elif atb in numerical_attributes:
-            return "numerical"
-        else:
-            return None  # Unknown type or attribute not found
+    # @staticmethod
+    # def get_data_categories(atb):
+    #     """return types: nominal, ordinal, numerical
+    #     - nominal are sex, fbs
+    #     - ordinal are cp, restecg, exng, slp
+    #     - numerical are age, trtbps, chol, thalachh, oldpeak, caa, thall"""
+    #     nominal_attributes = ["sex", "fbs"]
+    #     ordinal_attributes = ["cp", "restecg", "exng", "slp"]
+    #     numerical_attributes = ["age", "trtbps", "chol", "thalachh", "oldpeak",
+    #                             "caa", "thall"]
+    #
+    #     if atb in nominal_attributes:
+    #         return "nominal"
+    #     elif atb in ordinal_attributes:
+    #         return "ordinal"
+    #     elif atb in numerical_attributes:
+    #         return "numerical"
+    #     else:
+    #         return None  # Unknown type or attribute not found
 
 
 class PlotGraphs:
@@ -143,7 +143,7 @@ class PlotGraphs:
             # Embed the plot into the tkinter frame
             canvas = FigureCanvasTkAgg(fig, master=parent_frame)
             canvas.draw()
-            canvas.get_tk_widget().pack(side=tk.BOTTOM)
+            canvas.get_tk_widget().pack(side="bottom")
             return canvas.get_tk_widget()
         else:
             df = self.data.load_data
@@ -167,7 +167,7 @@ class PlotGraphs:
             # Embed the plot into the tkinter frame
             canvas = FigureCanvasTkAgg(fig, master=parent_frame)
             canvas.draw()
-            canvas.get_tk_widget().pack(side=tk.BOTTOM)
+            canvas.get_tk_widget().pack(side="bottom")
             return canvas.get_tk_widget()
 
     def plot_histogram(self, attribute, parent_frame) -> tk.Widget:
@@ -179,7 +179,7 @@ class PlotGraphs:
         # Embed the plot into the tkinter frame
         canvas = FigureCanvasTkAgg(fig, master=parent_frame)
         canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.BOTTOM)
+        canvas.get_tk_widget().pack(side="bottom")
 
         return canvas.get_tk_widget()
 
@@ -202,63 +202,24 @@ class PlotGraphs:
 
         return canvas.get_tk_widget()
 
-    def plot_scatter(self, attb1, attb2, range_attb1, range_attb2,
-                     parent_frame) -> tk.Widget:
-        """Plot a scatter plot for the given attributes within the specified ranges."""
-        df = self.data.load_data
-
-        # Filter data based on specified ranges
-        filtered_df = df[
-            (df[attb1] >= range_attb1[0]) & (df[attb1] <= range_attb1[1]) &
-            (df[attb2] >= range_attb2[0]) & (df[attb2] <= range_attb2[1])]
-
-        fig, ax = plt.subplots(figsize=(6, 4))
-        sns.scatterplot(data=filtered_df, x=attb1, y=attb2, hue='output')
-        plt.title(f"Scatter Plot for {attb1} and {attb2}")
-
-        # Embed the plot into the tkinter frame
-        canvas = FigureCanvasTkAgg(fig, master=parent_frame)
-        canvas.draw()
-        canvas.get_tk_widget().pack(side="bottom")
-        return canvas.get_tk_widget()
-
-    def plot_boxplot(self, attb1, attb2, range_attb1, range_attb2,
-                     parent_frame) -> tk.Widget:
-        """Plot a scatter plot for the given attributes within the specified ranges."""
-        df = self.data.load_data
-        # Filter data based on specified ranges
-        filtered_df = df[
-            (df[attb1] >= range_attb1[0]) & (df[attb1] <= range_attb1[1]) &
-            (df[attb2] >= range_attb2[0]) & (df[attb2] <= range_attb2[1])]
-
-        fig, ax = plt.subplots(figsize=(6, 4))
-        sns.boxplot(data=filtered_df, x=attb1, y=attb2)
-        plt.title(f"Box Plot for {attb1} and {attb2}")
-
-        # Embed the plot into the tkinter frame
-        canvas = FigureCanvasTkAgg(fig, master=parent_frame)
-        canvas.draw()
-        canvas.get_tk_widget().pack(side="bottom")
-        return canvas.get_tk_widget()
-
-    def plot_pie_chart(self, attb1, attb2, range_attb1, range_attb2,
-                       parent_frame) -> tk.Widget:
-        """for plotting a pie chart for the given attribute"""
-        df = self.data.load_data
-
-        filtered_df = df[
-            (df[attb1] >= range_attb1) & (df[attb1] <= range_attb1) &
-            (df[attb2] >= range_attb2) & (df[attb2] <= range_attb2)]
-
-        fig, ax = plt.subplots(figsize=(6, 4))
-        filtered_df[attb1].value_counts().plot.pie(autopct='%1.1f%%')
-        plt.title(f"Pie Chart for {attb1}")
-
-        # Embed the plot into the tkinter frame
-        canvas = FigureCanvasTkAgg(fig, master=parent_frame)
-        canvas.draw()
-        canvas.get_tk_widget().pack(side="bottom")
-        return canvas.get_tk_widget()
+    # def plot_pie_chart(self, attb1, attb2, range_attb1, range_attb2,
+    #                    parent_frame) -> tk.Widget:
+    #     """for plotting a pie chart for the given attribute"""
+    #     df = self.data.load_data
+    #
+    #     filtered_df = df[
+    #         (df[attb1] >= range_attb1) & (df[attb1] <= range_attb1) &
+    #         (df[attb2] >= range_attb2) & (df[attb2] <= range_attb2)]
+    #
+    #     fig, ax = plt.subplots(figsize=(6, 4))
+    #     filtered_df[attb1].value_counts().plot.pie(autopct='%1.1f%%')
+    #     plt.title(f"Pie Chart for {attb1}")
+    #
+    #     # Embed the plot into the tkinter frame
+    #     canvas = FigureCanvasTkAgg(fig, master=parent_frame)
+    #     canvas.draw()
+    #     canvas.get_tk_widget().pack(side="bottom")
+    #     return canvas.get_tk_widget()
 
     def plot_distribution(self, attb1, attb2, range_attb1, range_attb2,
                           parent_frame) -> tk.Widget:
@@ -313,5 +274,55 @@ class PlotGraphs:
         # Embed the plot into the tkinter frame
         canvas = FigureCanvasTkAgg(fig, master=parent_frame)
         canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.BOTTOM)
+        canvas.get_tk_widget().pack(side="bottom")
+        return canvas.get_tk_widget()
+
+    def plot_scatter(self, attb1, attb2, range_attb1, range_attb2,
+                     parent_frame) -> tk.Widget:
+        """Plot a scatter plot for the given attributes within the specified ranges."""
+
+        df = self.data.load_data
+        if not attb1:
+            messagebox.showerror("Error",
+                                 "Select an attribute for the left combobox.")
+            return
+        elif not attb2:
+            messagebox.showerror("Error",
+                                 "Select an attribute for the right combobox.")
+            return
+
+        if range_attb1 and range_attb2:
+            # Filter data based on specified ranges
+            filtered_df = df[
+                (df[attb1] <= range_attb1) & (df[attb2] <= range_attb2)]
+            # Determine the maximum range value for the x-axis
+            max_range_value = max(range_attb1, range_attb2)
+        elif range_attb1:
+            filtered_df = df[df[attb1] <= range_attb1]
+            max_range_value = range_attb1
+        elif range_attb2:
+            filtered_df = df[df[attb2] <= range_attb2]
+            max_range_value = range_attb2
+        else:
+            # If no range is specified, use the entire DataFrame
+            filtered_df = df
+            max_range_value = None
+
+        fig, ax = plt.subplots(figsize=(6, 4))
+
+        # Plot scatter plot of the two attributes
+        sns.scatterplot(data=filtered_df, x=attb1, y=attb2, ax=ax)
+
+        plt.title(f"Scatter Plot for {attb1} and {attb2}")
+        plt.xlabel(attb1)
+        plt.ylabel(attb2)
+
+        # Set maximum value for x-axis
+        if max_range_value is not None:
+            plt.xlim(right=max_range_value)
+
+        # Embed the plot into the tkinter frame
+        canvas = FigureCanvasTkAgg(fig, master=parent_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side="bottom")
         return canvas.get_tk_widget()
