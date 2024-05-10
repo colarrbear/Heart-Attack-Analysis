@@ -1,6 +1,6 @@
 """handles the User interface of the application"""
 # TODO:
-# - nominal data (e.g. gender) must not compute in descriptive statatistics.
+# - (done) nominal data (e.g. gender) must not compute in descriptive statatistics.
 # - (done) bar chart still received only one attribute. Not yet implemented for two attributes.
 # - (done) correlation still not yet implemented for one attribute.
 # - For "Graph" (superior graph) tab and Home tab is work in progress.
@@ -96,7 +96,7 @@ class HeartDiseaseView(tk.Tk):
         self.__attributes_label.place(x=canvas_width / 2 - 20, y=canvas_height / 2 - 30)
 
         # Update the size and position of the Output Frame
-        self.output_frame.place(x=canvas_width / 2 - 20, y=canvas_height / 2 + 30)
+        self.output_frame.place(x=canvas_width / 2 - 80, y=canvas_height / 2 + 30)
 
     def data_info_bg(self):
         """Set the background image for the Home tab."""
@@ -118,7 +118,9 @@ class HeartDiseaseView(tk.Tk):
 
         # Add a frame within the canvas for output
         self.output_frame = tk.Frame(self.canvas)
-        self.output_frame.place(x=500, y=350)
+        self.canvas.create_window(0, 0, window=self.output_frame)
+        self.output_frame.pack(side="left", padx=20, pady=20, fill="both",
+                               expand=True)
 
     def data_info_handle_attribute_selection(self, selected_attribute):
         """
@@ -128,8 +130,10 @@ class HeartDiseaseView(tk.Tk):
         data_info = self.controller.summary_statistics()[selected_attribute]
         self.data_info_update_data_information_tab(data_info)
 
-    def data_info_update_data_information_tab(self, data_info):
+    def data_info_update_data_information_tab(self, selected_atb):
         """Update the Data Information tab with the given data information."""
+        data_info = selected_atb
+
         # Clear existing labels in the output frame
         for child in self.output_frame.winfo_children():
             child.destroy()
@@ -140,7 +144,8 @@ class HeartDiseaseView(tk.Tk):
             label = ttk.Label(self.output_frame, text=f"{stat}:   {value:.4g}")
             color = "#F27A79"
             label.config(font=("TkDefaultFont", 13), foreground=color)
-            label.pack(side="top", fill="x", padx=5, pady=2, expand=True, anchor="center")
+            label.pack(side="top", fill="x", padx=5, pady=2, expand=True, anchor="ne")
+
 
     def init_statistics_tab(self):
         """Initialize the Statistics tab."""
@@ -319,12 +324,6 @@ class HeartDiseaseView(tk.Tk):
         self.__home_attribute_combobox.place(x=canvas_width / 2 - 100, y=canvas_height / 1.375)
         self.__home_attribute_combobox.config(width=canvas_width // 50)
 
-        # Update the size and position of the Label
-        # x_center = (self.home_tab.winfo_reqwidth() - self.__home_description_label.winfo_reqwidth()) / 2
-        # x_center = canvas_width / 2 - 100
-        # self.__home_description_label.place(x=canvas_width / 2 - 125, y=canvas_height / 1.375 + 45)
-        # self.__home_description_label.place(x=x_center, y=canvas_height / 1.375 + 45)
-
     def home_combobox_description(self):
         """Place a combobox inside the background image."""
         # Create a combobox to select attributes
@@ -333,15 +332,9 @@ class HeartDiseaseView(tk.Tk):
         self.__home_attribute_combobox.place(x=425, y=450)
         self.__home_attribute_combobox.set(self.data_loader.get_column_names[0])
         self.__home_attribute_combobox.bind("<<ComboboxSelected>>",
-                                           self.display_attribute_description)
+                                            self.home_display_attribute_description)
 
-        # Create a label to display the description
-        # self.__home_description_label = ttk.Label(self.canvas)
-        # self.__home_description_label.config(wraplength=300)
-
-
-
-    def display_attribute_description(self, event):
+    def home_display_attribute_description(self, event):
         # print(selected_attribute)
         """Display the description of the selected attribute."""
         attribute_descriptions = {
@@ -381,12 +374,6 @@ class HeartDiseaseView(tk.Tk):
         # Update the description label with the description of the selected attribute
         selected_attribute = self.__home_attribute_combobox.get()
         description = attribute_descriptions[selected_attribute]
-
-        # self.__home_description_label.config(text=description)
-        # self.__home_description_label.config(font=("TkDefaultFont", 12))
-        # # color = "#5A60A5" blue
-        # color = "#F27A79"
-        # self.__home_description_label.config(foreground=color)
 
         # create pop-up window for description
 

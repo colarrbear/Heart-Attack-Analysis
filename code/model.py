@@ -42,6 +42,31 @@ class DataLoader:
             filtered_data = filtered_data[filtered_data[column] == value]
         return filtered_data
 
+    def get_data_types(self):
+        """returns the data types of the columns"""
+        return self.data.dtypes
+
+    @staticmethod
+    def get_data_categories(atb):
+        """return types: nominal, ordinal, numerical
+        - nominal are sex, fbs
+        - ordinal are cp, restecg, exng, slp
+        - numerical are age, trtbps, chol, thalachh, oldpeak, caa, thall"""
+        nominal_attributes = ["sex", "fbs"]
+        ordinal_attributes = ["cp", "restecg", "exng", "slp"]
+        numerical_attributes = ["age", "trtbps", "chol", "thalachh", "oldpeak",
+                                "caa", "thall"]
+
+        if atb in nominal_attributes:
+            return "nominal"
+        elif atb in ordinal_attributes:
+            return "ordinal"
+        elif atb in numerical_attributes:
+            return "numerical"
+        else:
+            return None  # Unknown type or attribute not found
+
+
 
 class PlotGraphs:
     """
@@ -53,7 +78,51 @@ class PlotGraphs:
 
     def summary_statistics(self):
         """returns summary statistics for the data"""
-        return self.data.load_data.describe()
+        # return self.data.load_data.describe()
+        nominal_attributes = ["sex", "fbs", "output"]
+        ordinal_attributes = ["cp", "restecg", "exng", "slp"]
+        numerical_attributes = ["age", "trtbps", "chol", "thalachh", "oldpeak",
+                                "caa", "thall"]
+
+        data_description = self.data.load_data.describe()
+
+        custom_summary = {}
+        for attribute in data_description.columns:
+            attribute_data = data_description[attribute]
+
+            # Determine attribute type
+            if attribute in nominal_attributes:
+                mode_value = attribute_data.mode()[0]
+                custom_summary[attribute] = {"Mode": mode_value}
+            elif attribute in ordinal_attributes:
+                median_value = attribute_data.median()
+                data_range = attribute_data.max() - attribute_data.min()
+                quartiles = attribute_data.quantile([0.25, 0.75])
+                iqr_value = quartiles[0.75] - quartiles[0.25]
+                custom_summary[attribute] = {
+                    "Median": median_value,
+                    "Range": data_range,
+                    "Interquartile Range (IQR)": iqr_value
+                }
+            elif attribute in numerical_attributes:
+                mean_value = attribute_data.mean()
+                median_value = attribute_data.median()
+                std_deviation = attribute_data.std()
+                variance = attribute_data.var()
+                data_range = attribute_data.max() - attribute_data.min()
+                quartiles = attribute_data.quantile([0.25, 0.75])
+                iqr_value = quartiles[0.75] - quartiles[0.25]
+                custom_summary[attribute] = {
+                    "Mean": mean_value,
+                    "Median": median_value,
+                    "Standard Deviation": std_deviation,
+                    "Variance": variance,
+                    "Range": data_range,
+                    "Interquartile Range (IQR)": iqr_value
+                }
+
+        return custom_summary
+
 
     def calculate_correlations(self):
         """returns correlation values for the data"""
