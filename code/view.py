@@ -410,15 +410,26 @@ class HeartDiseaseView(tk.Tk):
     def init_advance_graph_tab(self):
         """This function initializes the graph tab:
         let user create their own interesting in any attributes."""
-        # Create a frame for visual separation
-        adv_separator_frame = tk.Frame(self.graph_tab, height=10)
-        adv_separator_frame.grid(row=1, column=0, columnspan=7, sticky="ew")
-
         # Create another frame for the graph canvas
         self.__graph_canvas_frame = tk.Frame(self.graph_tab, width=1020,
                                              height=400)
-        self.__graph_canvas_frame.grid(row=4, column=0, columnspan=7,
-                                       sticky="nsew")
+        self.__graph_canvas_frame.grid(row=5, column=0, columnspan=10,
+                                       sticky="nsew", padx=5, pady=5)
+        self.graph_tab.rowconfigure(5, weight=1)
+        self.graph_tab.columnconfigure(0, weight=1)
+
+        # Create the menu box for selecting the graph type
+        graph_type_label = ttk.Label(self.graph_tab, text="Select Graph Type:")
+        graph_type_label.grid(row=1, column=0, padx=5, pady=5, sticky="w")
+
+        self.graph_type_combobox = ttk.Combobox(self.graph_tab,
+                                                values=["Distribution Graph",
+                                                        "Scatter Polt",
+                                                        "Bar Charts"])
+        self.graph_type_combobox.set("Distribution Graph")
+        self.graph_type_combobox.grid(row=1, column=1, columnspan=1, padx=5,
+                                      pady=5,sticky="ew")
+        self.graph_type_combobox.columnconfigure(0, weight=1)
 
         # Create the menu box for the 1st attribute
         adv_attr1_label = ttk.Label(self.graph_tab,
@@ -426,23 +437,27 @@ class HeartDiseaseView(tk.Tk):
         adv_attr1_label.grid(row=0, column=0, padx=5, pady=5, sticky="w")
 
         self.adv_attr1_combobox = ttk.Combobox(self.graph_tab,
-                                               values=["Attribute 1",
-                                                       "Attribute 2",
-                                                       "Attribute 3"])
-        self.adv_attr1_combobox.grid(row=0, column=1, padx=5, pady=5,
-                                     sticky="w")
+                                               values=self.data_loader.get_column_names)
+        self.adv_attr1_combobox.set(self.data_loader.get_column_names[0])
+        self.adv_attr1_combobox.grid(row=0, column=1, columnspan=1, padx=5,
+                                     pady=5,
+                                     sticky="ew")
+        self.adv_attr1_combobox.columnconfigure(0, weight=1)
+        self.adv_attr1_combobox.rowconfigure(0, weight=1)
 
         # Create the menu box for the 2nd attribute
         adv_attr2_label = ttk.Label(self.graph_tab,
                                     text="Select 2nd Attribute:")
-        adv_attr2_label.grid(row=0, column=2, padx=5, pady=5, sticky="w")
+        adv_attr2_label.grid(row=0, column=3, padx=5, pady=5, sticky="w")
 
         self.adv_attr2_combobox = ttk.Combobox(self.graph_tab,
-                                               values=["Attribute 1",
-                                                       "Attribute 2",
-                                                       "Attribute 3"])
-        self.adv_attr2_combobox.grid(row=0, column=3, padx=5, pady=5,
-                                     sticky="w")
+                                               values=self.data_loader.get_column_names)
+        self.adv_attr2_combobox.set(self.data_loader.get_column_names[0])
+        self.adv_attr2_combobox.grid(row=0, column=4, columnspan=1, padx=5,
+                                     pady=5,
+                                     sticky="ew")
+        self.adv_attr2_combobox.columnconfigure(0, weight=1)
+        self.adv_attr2_combobox.rowconfigure(0, weight=1)
 
         # Create labels for attribute range sliders
         adv_left_range_label = ttk.Label(self.graph_tab,
@@ -469,30 +484,26 @@ class HeartDiseaseView(tk.Tk):
         # Create labels to display current range slider values
         self.adv_left_range_value_label = ttk.Label(self.graph_tab, text="0")
         self.adv_left_range_value_label.grid(row=2, column=1, padx=5, pady=5,
-                                             sticky="w")
+                                             sticky="e")
 
         self.adv_right_range_value_label = ttk.Label(self.graph_tab, text="0")
         self.adv_right_range_value_label.grid(row=2, column=3, padx=5, pady=5,
-                                              sticky="w")
+                                              sticky="e")
 
         # Button to clear range
         clear_button = ttk.Button(self.graph_tab, text="Clear Range",
                                   command=self.clear_range)
-        clear_button.grid(row=3, column=0, columnspan=2, padx=5, pady=5,
-                          sticky="w")
+        clear_button.grid(row=3, column=0, sticky="ew", padx=5, pady=5)
 
         # Create check button to enable attribute selection
+        adv_check_label = ttk.Label(self.graph_tab, text="Choose Range?")
+        adv_check_label.grid(row=1, column=3, padx=5, pady=5, sticky="w")
+
         self.adv_check_var = tk.BooleanVar()
         adv_check_button = ttk.Checkbutton(self.graph_tab,
                                            variable=self.adv_check_var,
                                            command=self.toggle_attribute_selection)
-        adv_check_button.grid(row=1, column=1, padx=5, pady=5, sticky="w")
-        #
-        self.adv_check_var = tk.BooleanVar()
-        # adv_check_button = ttk.Checkbutton(self.graph_tab,
-        #                                    variable=self.adv_check_var,
-        #                                    command=self.toggle_attribute_selection)
-        # adv_check_button.grid(row=1, column=1, padx=5, pady=5, sticky="w")
+        adv_check_button.grid(row=1, column=4, padx=5, pady=5, sticky="w")
 
         # Initially disable range sliders
         self.toggle_attribute_selection()
