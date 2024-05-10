@@ -89,6 +89,6 @@ from tkinter import ttk
 #
 # app.geometry('200x200')
 
-app = ThemedTk(theme="winxpblue")
-ttk.Button(app, text="Quit", command=app.destroy).pack()
-app.mainloop()
+# app = ThemedTk(theme="winxpblue")
+# ttk.Button(app, text="Quit", command=app.destroy).pack()
+# app.mainloop()

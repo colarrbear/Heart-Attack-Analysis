@@ -145,8 +145,10 @@ class HeartDiseaseView(tk.Tk):
                    "\n0 = false",
             "restecg": "Resting electrocardiographic results\n"
                        "Value 0: normal\n"
-                       "Value 1: having ST-T wave abnormality (T wave inversions and/or ST elevation or depression of > 0.05 mV)\n"
-                       "Value 2: showing probable or definite left ventricular hypertrophy by Estes' criteria",
+                       "Value 1: having ST-T wave abnormality (T wave inversion"
+                       "s and/or ST elevation or depression of > 0.05 mV)\n"
+                       "Value 2: showing probable or definite left ventricu"
+                       "lar hypertrophy by Estes' criteria",
             "thalachh": "Maximum heart rate achieved",
             "exng": "Exercise induced angina\n"
                     "1 = yes"
@@ -162,14 +164,16 @@ class HeartDiseaseView(tk.Tk):
                       "0 = Less chance"
                       "\n1 = More chance of heart attack"}
 
-        # Update the description label with the description of the selected attribute
+        # Update the description label with the description of
+        # the selected attribute
         selected_attribute = self.__home_attribute_combobox.get()
         description = attribute_descriptions[selected_attribute]
 
         # Check if a description window already exists, then destroy it
         for widget in self.winfo_children():
-            if isinstance(widget,
-                          tk.Toplevel) and widget.title() == "GoodHeart Description":
+            if (isinstance(widget,
+                           tk.Toplevel) and widget.title() ==
+                    "GoodHeart Description"):
                 widget.destroy()
 
         # Create a Toplevel window for the description
@@ -183,7 +187,8 @@ class HeartDiseaseView(tk.Tk):
         y_coordinate = self.winfo_y() + 100
 
         description_window.geometry(
-            f"{description_window_width}x{description_window_height}+{x_coordinate}+{y_coordinate}")
+            f"{description_window_width}x{description_window_height}"
+            f"+{x_coordinate}+{y_coordinate}")
 
         # Label with the description text for the selected attribute
         description_label = tk.Label(description_window, text=description,
@@ -222,7 +227,8 @@ class HeartDiseaseView(tk.Tk):
         self.canvas.bind("<Configure>", self.data_info_on_canvas_resize)
 
     def data_info_on_canvas_resize(self, event):
-        """Adjust the size and position of the components (in data infomation tab)
+        """Adjust the size and position of the components
+        (in data infomation tab)
         when the canvas is resized."""
 
         # Get the new size of the canvas
@@ -260,7 +266,8 @@ class HeartDiseaseView(tk.Tk):
         # Display the image on the Canvas
         self.canvas.create_image(0, 0, anchor=tk.NW,
                                  image=data_info_bg_image_tk)
-        self.canvas.image = data_info_bg_image_tk  # Keep a reference to the image
+        self.canvas.image = data_info_bg_image_tk
+        # Keep a reference to the image
 
         # Add a frame within the canvas for output
         self.output_frame = tk.Frame(self.canvas)
@@ -286,7 +293,8 @@ class HeartDiseaseView(tk.Tk):
 
         # Create labels for data information and place them in the output frame
         for i, (stat, value) in enumerate(data_info.items()):
-            # Create a label with the background color matching the frame's background color
+            # Create a label with the background color matching
+            # the frame's background color
             label = ttk.Label(self.output_frame, text=f"{stat}:   {value:.4g}")
             color = "#F27A79"
             label.config(font=("TkDefaultFont", 13), foreground=color)
@@ -353,8 +361,10 @@ class HeartDiseaseView(tk.Tk):
         left = self.left_attribute_combobox.get()
         right = None
 
-        # If the selected visualization is "Bar Charts", fetch the right attribute
-        if self.__selected == "Bar Charts" or self.__selected == "Stack Bar graph":
+        # If the selected visualization is "Bar Charts",
+        # fetch the right attribute
+        if (self.__selected == "Bar Charts" or
+                self.__selected == "Stack Bar graph"):
             right = self.right_attribute_combobox.get()
 
         # Clear the existing graph canvas
@@ -441,7 +451,8 @@ class HeartDiseaseView(tk.Tk):
         # Check if both comboboxes have selections
         if selected_left and selected_right:
             if selected_left == selected_right:
-                messagebox.showerror("Error", "Select different attributes.")
+                messagebox.showerror("Error",
+                                     "Select different attributes.")
                 self.right_attribute_combobox.set("")
         elif not selected_left:
             messagebox.showerror("Error",

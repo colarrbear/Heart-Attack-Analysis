@@ -76,22 +76,7 @@ class PlotGraphs:
                     "Range": data_range,
                     "Interquartile Range (IQR)": iqr_value
                 }
-            # elif attribute in numerical_attributes:
-            #     mean_value = attribute_data.mean()
-            #     median_value = attribute_data.median()
-            #     std_deviation = attribute_data.std()
-            #     variance = attribute_data.var()
-            #     data_range = attribute_data.max() - attribute_data.min()
-            #     quartiles = attribute_data.quantile([0.25, 0.75])
-            #     iqr_value = quartiles[0.75] - quartiles[0.25]
-            #     custom_summary[attribute] = {
-            #         "Mean": mean_value,
-            #         "Median": median_value,
-            #         "Standard Deviation": std_deviation,
-            #         "Variance": variance,
-            #         "Range": data_range,
-            #         "Interquartile Range (IQR)": iqr_value
-            #     }
+
             elif attribute in numerical_attributes:
                 quartiles = attribute_data.quantile([0.25, 0.75])
                 custom_summary[attribute] = {
@@ -159,7 +144,8 @@ class PlotGraphs:
         """for plotting a correlation between two attributes"""
 
         # Selecting only the specified attributes for correlation calculation
-        selected_attributes = ["chol", "exng", "trtbps", "thalachh", "caa", "age", "sex", "output"]
+        selected_attributes = ["chol", "exng", "trtbps", "thalachh",
+                               "caa", "age", "sex", "output"]
 
         df_corr = self.data.load_data[selected_attributes].corr()
 
@@ -167,7 +153,8 @@ class PlotGraphs:
         fig, ax = plt.subplots(figsize=(7, 4.5))
         sns.heatmap(df_corr, annot=True, cmap="coolwarm", ax=ax)
 
-        plt.title("Correlation of chol, exng, trtbps, thalachh, caa, age, sex, output")
+        plt.title("Correlation of chol, exng, trtbps, thalachh, "
+                  "caa, age, sex, output")
         # Embed the plot into the tkinter frame
         canvas = FigureCanvasTkAgg(plt.gcf(), master=parent_frame)
         canvas.draw()
@@ -177,7 +164,8 @@ class PlotGraphs:
 
     def plot_distribution(self, attb1, attb2, range_attb1, range_attb2,
                           parent_frame) -> tk.Widget:
-        """Plot a distribution plot for the given attributes within the specified ranges."""
+        """Plot a distribution plot for the given attributes
+        within the specified ranges."""
         df = self.data.load_data
         if not attb1:
             messagebox.showerror("Error",
@@ -271,7 +259,8 @@ class PlotGraphs:
 
         # Add coefficient to the plot title
         plt.title(
-            f"Scatter Plot for {attb1} and {attb2} (Correlation: {correlation_coefficient:.2f})")
+            f"Scatter Plot for {attb1} and {attb2} (Correlation: "
+            f"{correlation_coefficient:.2f})")
         plt.xlabel(attb1)
         plt.ylabel(attb2)
 
@@ -322,7 +311,8 @@ class PlotGraphs:
         grouped_data = data.groupby(['age', 'sex'])[
             'output'].mean().reset_index()
 
-        # Pivot the data to create a matrix with age as rows, sex as columns, and average output as values
+        # Pivot the data to create a matrix with age as rows,
+        # sex as columns, and average output as values
         pivot_data = grouped_data.pivot(index='age', columns='sex',
                                         values='output')
 
