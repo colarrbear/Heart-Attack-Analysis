@@ -58,6 +58,122 @@ class HeartDiseaseView(tk.Tk):
         self.feature_tabs.add(self.graph_tab, text="Graph")
         self.init_advance_graph_tab()
 
+
+    def init_home_tab(self):
+        """Initialize the Home tab."""
+        pass
+        # self.home_bg()
+        # self.home_combobox_description()
+
+    # def home_bg(self):
+    #     """Set the background image for the Home tab."""
+    #     # Load the image
+    #     bg_image = Image.open("bgs/home_bg.png")
+    #     bg_image_tk = ImageTk.PhotoImage(bg_image)
+    #
+    #     # Create a Canvas to display the image
+    #     self.canvas = tk.Canvas(self.home_tab, width=bg_image.width - 50, height=bg_image.height)
+    #     self.canvas.pack(fill="both", expand=True)
+    #     self.canvas.pack()
+    #
+    #     self.canvas.bind("<Configure>", self.home_on_canvas_resize)
+    #
+    #     # Display the image on the Canvas
+    #     self.canvas.create_image(0, 0, anchor=tk.NW, image=bg_image_tk)
+    #     self.canvas.image = bg_image_tk  # Keep a reference to the image
+    #
+    # def home_on_canvas_resize(self, event):
+    #     """Adjust the size and position of the components (of home tab) when the canvas is resized."""
+    #     # Get the new size of the canvas
+    #     canvas_width = event.width
+    #     canvas_height = event.height
+    #
+    #     # Update the size and position of the Combobox
+    #     self.__home_attribute_combobox.place(x=canvas_width / 2 - 100, y=canvas_height / 1.375)
+    #     self.__home_attribute_combobox.config(width=canvas_width // 50)
+    #
+    # def home_combobox_description(self):
+    #     """Place a combobox inside the background image."""
+    #     # Create a combobox to select attributes
+    #     self.__home_attribute_combobox = ttk.Combobox(self.home_tab,
+    #                                            values=self.data_loader.get_column_names)
+    #     self.__home_attribute_combobox.place(x=425, y=450)
+    #     self.__home_attribute_combobox.set(self.data_loader.get_column_names[0])
+    #     self.__home_attribute_combobox.bind("<<ComboboxSelected>>",
+    #                                         self.home_display_attribute_description)
+    #
+    # def home_display_attribute_description(self, event):
+    #     # print(selected_attribute)
+    #     """Display the description of the selected attribute."""
+    #     attribute_descriptions = {
+    #         "age": "Age of the patient (in years)",
+    #         "sex": "Sex of the patient "
+    #                "\n1 = male\n"
+    #                "0 = female",
+    #         "cp": "Chest pain type\n"
+    #               "Value 1: typical angina\n"
+    #               "Value 2: atypical angina\n"
+    #               "Value 3: non-anginal pain\n"
+    #               "Value 4: asymptomatic",
+    #         "trtbps": "Resting blood pressure (in mm Hg on admission to the hospital)",
+    #         "chol": "Serum cholesterol in mg/dl",
+    #         "fbs": "Fasting blood sugar (> 120 mg/dl)\n"
+    #                "1 = true"
+    #                "\n0 = false",
+    #         "restecg": "Resting electrocardiographic results\n"
+    #                    "Value 0: normal\n"
+    #                    "Value 1: having ST-T wave abnormality (T wave inversions and/or ST elevation or depression of > 0.05 mV)\n"
+    #                    "Value 2: showing probable or definite left ventricular hypertrophy by Estes' criteria",
+    #         "thalachh": "Maximum heart rate achieved",
+    #         "exng": "Exercise induced angina\n"
+    #                 "1 = yes"
+    #                 "\n0 = no",
+    #         "oldpeak": "ST depression induced by exercise relative to rest",
+    #         "slope": "The slope of the peak exercise ST segment\n"
+    #                  "Value 1: upsloping\n"
+    #                  "Value 2: flat\n"
+    #                  "Value 3: downsloping",
+    #         "caa": "Number of major vessels (0-3) colored by fluoroscopy",
+    #         "thall": "Thal rate",
+    #         "output": "Target variable\n"
+    #                   "0 = Less chance"
+    #                   "\n1 = More chance of heart attack"}
+    #
+    #     # Update the description label with the description of the selected attribute
+    #     selected_attribute = self.__home_attribute_combobox.get()
+    #     description = attribute_descriptions[selected_attribute]
+    #
+    #     # create pop-up window for description
+    #
+    #     # Check if a description window already exists, then destroy it
+    #     for widget in self.winfo_children():
+    #         if isinstance(widget, tk.Toplevel) and widget.title() == "GoodHeart Description":
+    #             widget.destroy()
+    #
+    #     # Create a Toplevel window for the description
+    #     description_window = tk.Toplevel(self)
+    #     description_window.title("GoodHeart Description")
+    #
+    #     # Set the geometry of the description window
+    #     description_window_width = 400
+    #     description_window_height = 200
+    #     x_coordinate = self.winfo_x() + 100
+    #     y_coordinate = self.winfo_y() + 100
+    #
+    #     description_window.geometry(
+    #         f"{description_window_width}x{description_window_height}+{x_coordinate}+{y_coordinate}")
+    #
+    #     # Label with the description text for the selected attribute
+    #     description_label = tk.Label(description_window, text=description,
+    #                                  wraplength=280)
+    #     description_label.config(font=("TkDefaultFont", 12))
+    #     description_label.config(foreground="#F27A79")
+    #     description_label.pack(pady=20)
+    #
+    #     # Button to close the popup window
+    #     close_button = tk.Button(description_window, text="Quit", command=description_window.destroy)
+    #     close_button.pack(pady=10, side="bottom")
+
     def init_data_information_tab(self):
         """Initialize the Data Information tab."""
         self.data_info_bg()
@@ -71,12 +187,12 @@ class HeartDiseaseView(tk.Tk):
         column = self.data_loader.get_column_names
 
         # Add a combobox to select attributes in Data Information tab
-        self.attribute_combobox = ttk.Combobox(self.data_information_tab, values=column)
-        self.attribute_combobox.place(x=450, y=290)
-        self.attribute_combobox.set(column[0])  # Set default value
-        self.attribute_combobox.bind("<<ComboboxSelected>>", lambda
+        self.__attribute_combobox = ttk.Combobox(self.data_information_tab, values=column)
+        self.__attribute_combobox.place(x=450, y=290)
+        self.__attribute_combobox.set(column[0])  # Set default value
+        self.__attribute_combobox.bind("<<ComboboxSelected>>", lambda
             event: self.data_info_handle_attribute_selection(
-            self.attribute_combobox.get()))
+            self.__attribute_combobox.get()))
 
         self.canvas.bind("<Configure>", self.data_info_on_canvas_resize)
 
@@ -89,8 +205,8 @@ class HeartDiseaseView(tk.Tk):
         canvas_height = event.height
 
         # Update the size and position of the Combobox
-        self.attribute_combobox.place(x=canvas_width / 2 - 70, y=canvas_height / 2)
-        self.attribute_combobox.config(width=canvas_width // 50)
+        self.__attribute_combobox.place(x=canvas_width / 2 - 70, y=canvas_height / 2)
+        self.__attribute_combobox.config(width=canvas_width // 50)
 
         # Update the size and position of the Label
         self.__attributes_label.place(x=canvas_width / 2 - 20, y=canvas_height / 2 - 30)
@@ -146,7 +262,6 @@ class HeartDiseaseView(tk.Tk):
             label.config(font=("TkDefaultFont", 13), foreground=color)
             label.pack(side="top", fill="x", padx=5, pady=2, expand=True, anchor="ne")
 
-
     def init_statistics_tab(self):
         """Initialize the Statistics tab."""
         # Create a frame for visual separation
@@ -170,7 +285,7 @@ class HeartDiseaseView(tk.Tk):
                                      values=["Bar Charts", "Histogram",
                                              "Correlations"])
         menu_combobox.pack(side="top", fill="x", padx=5, pady=5)
-        menu_combobox.bind("<<ComboboxSelected>>", self.handle_menu_selection)
+        menu_combobox.bind("<<ComboboxSelected>>", self.stat_handle_menu_selection)
 
         # Create the label for the first attribute combobox
         left_label = ttk.Label(self.statistics_tab,
@@ -196,17 +311,17 @@ class HeartDiseaseView(tk.Tk):
         # Create the button to create the graph
         create_graph_button = ttk.Button(self.statistics_tab,
                                          text="Plot Graph",
-                                         command=self.create_graph)
+                                         command=self.stat_create_graph)
         create_graph_button.pack(side="right", padx=5, pady=5)
 
-    def create_graph(self):
-        """Create a graph based on the selected visualization."""
-        selected = self.selected_visualization
+    def stat_create_graph(self):
+        """Create a graph based on the self.__selected visualization."""
+        self.__selected = self.selected_visualization
         left = self.left_attribute_combobox.get()
         right = None
 
         # If the selected visualization is "Correlations", fetch the right attribute
-        if selected == "Correlations" or selected == "Bar Charts":
+        if self.__selected == "Correlations" or self.__selected == "Bar Charts":
             right = self.right_attribute_combobox.get()
 
         # Clear the existing graph canvas
@@ -214,32 +329,15 @@ class HeartDiseaseView(tk.Tk):
             widget.destroy()
 
         # Plot the graph based on the selected visualization
-        if selected == "Bar Charts":
+        if self.__selected == "Bar Charts":
             self.plotter.plot_bar_chart(left, right, self.graph_canvas_frame)
-        elif selected == "Histogram":
+        elif self.__selected == "Histogram":
             self.plotter.plot_histogram(left, self.graph_canvas_frame)
-        elif selected == "Correlations":
+        elif self.__selected == "Correlations":
             self.disable_comboboxes()
             self.plotter.plot_correlation(self.graph_canvas_frame)
-
-    def enable_comboboxes(self):
-        """Enable the comboboxes in the Statistics tab."""
-        self.left_attribute_combobox["state"] = "normal"
-        self.right_attribute_combobox["state"] = "normal"
-
-    def disable_right_combobox(self):
-        """Disable the right combobox in the Statistics tab."""
-        self.right_attribute_combobox.set("")
-        self.right_attribute_combobox["state"] = "disabled"
-
-    def disable_comboboxes(self):
-        """Disable all the comboboxes in the Statistics tab."""
-        self.left_attribute_combobox.set("")
-        self.right_attribute_combobox.set("")
-        self.left_attribute_combobox["state"] = "disabled"
-        self.right_attribute_combobox["state"] = "disabled"
-
-    def handle_menu_selection(self, event):
+            
+    def stat_handle_menu_selection(self, event):
         """Handle the selection of a visualization in the Statistics tab."""
         selected = event.widget.get()
         self.selected_visualization = selected
@@ -267,6 +365,23 @@ class HeartDiseaseView(tk.Tk):
         elif selected == "Correlations":
             pass
 
+    def enable_comboboxes(self):
+        """Enable the comboboxes."""
+        self.left_attribute_combobox["state"] = "normal"
+        self.right_attribute_combobox["state"] = "normal"
+
+    def disable_right_combobox(self):
+        """Disable the right combobox."""
+        self.right_attribute_combobox.set("")
+        self.right_attribute_combobox["state"] = "disabled"
+
+    def disable_comboboxes(self):
+        """Disable all the comboboxes."""
+        self.left_attribute_combobox.set("")
+        self.right_attribute_combobox.set("")
+        self.left_attribute_combobox["state"] = "disabled"
+        self.right_attribute_combobox["state"] = "disabled"
+
     def validate_comboboxes(self, event):
         """Validate the selected attributes in the comboboxes."""
         selected_left = self.left_attribute_combobox.get()
@@ -292,125 +407,124 @@ class HeartDiseaseView(tk.Tk):
         self.quit_button = ttk.Button(self, text="Quit", command=self.quit)
         self.quit_button.pack(side=tk.BOTTOM, padx=10, pady=10)
 
-    def init_home_tab(self):
-        """Initialize the Home tab."""
-        self.home_bg()
-        self.home_combobox_description()
-
-    def home_bg(self):
-        """Set the background image for the Home tab."""
-        # Load the image
-        bg_image = Image.open("bgs/home_bg.png")
-        bg_image_tk = ImageTk.PhotoImage(bg_image)
-
-        # Create a Canvas to display the image
-        self.canvas = tk.Canvas(self.home_tab, width=bg_image.width - 50, height=bg_image.height)
-        self.canvas.pack(fill="both", expand=True)
-        self.canvas.pack()
-
-        self.canvas.bind("<Configure>", self.home_on_canvas_resize)
-
-        # Display the image on the Canvas
-        self.canvas.create_image(0, 0, anchor=tk.NW, image=bg_image_tk)
-        self.canvas.image = bg_image_tk  # Keep a reference to the image
-
-    def home_on_canvas_resize(self, event):
-        """Adjust the size and position of the components (of home tab) when the canvas is resized."""
-        # Get the new size of the canvas
-        canvas_width = event.width
-        canvas_height = event.height
-
-        # Update the size and position of the Combobox
-        self.__home_attribute_combobox.place(x=canvas_width / 2 - 100, y=canvas_height / 1.375)
-        self.__home_attribute_combobox.config(width=canvas_width // 50)
-
-    def home_combobox_description(self):
-        """Place a combobox inside the background image."""
-        # Create a combobox to select attributes
-        self.__home_attribute_combobox = ttk.Combobox(self.home_tab,
-                                               values=self.data_loader.get_column_names)
-        self.__home_attribute_combobox.place(x=425, y=450)
-        self.__home_attribute_combobox.set(self.data_loader.get_column_names[0])
-        self.__home_attribute_combobox.bind("<<ComboboxSelected>>",
-                                            self.home_display_attribute_description)
-
-    def home_display_attribute_description(self, event):
-        # print(selected_attribute)
-        """Display the description of the selected attribute."""
-        attribute_descriptions = {
-            "age": "Age of the patient (in years)",
-            "sex": "Sex of the patient "
-                   "\n1 = male\n"
-                   "0 = female",
-            "cp": "Chest pain type\n"
-                  "Value 1: typical angina\n"
-                  "Value 2: atypical angina\n"
-                  "Value 3: non-anginal pain\n"
-                  "Value 4: asymptomatic",
-            "trtbps": "Resting blood pressure (in mm Hg on admission to the hospital)",
-            "chol": "Serum cholesterol in mg/dl",
-            "fbs": "Fasting blood sugar (> 120 mg/dl)\n"
-                   "1 = true"
-                   "\n0 = false",
-            "restecg": "Resting electrocardiographic results\n"
-                       "Value 0: normal\n"
-                       "Value 1: having ST-T wave abnormality (T wave inversions and/or ST elevation or depression of > 0.05 mV)\n"
-                       "Value 2: showing probable or definite left ventricular hypertrophy by Estes' criteria",
-            "thalachh": "Maximum heart rate achieved",
-            "exng": "Exercise induced angina\n"
-                    "1 = yes"
-                    "\n0 = no",
-            "oldpeak": "ST depression induced by exercise relative to rest",
-            "slope": "The slope of the peak exercise ST segment\n"
-                     "Value 1: upsloping\n"
-                     "Value 2: flat\n"
-                     "Value 3: downsloping",
-            "caa": "Number of major vessels (0-3) colored by fluoroscopy",
-            "thall": "Thal rate",
-            "output": "Target variable\n"
-                      "0 = Less chance"
-                      "\n1 = More chance of heart attack"}
-
-        # Update the description label with the description of the selected attribute
-        selected_attribute = self.__home_attribute_combobox.get()
-        description = attribute_descriptions[selected_attribute]
-
-        # create pop-up window for description
-
-        # Check if a description window already exists, then destroy it
-        for widget in self.winfo_children():
-            if isinstance(widget, tk.Toplevel) and widget.title() == "GoodHeart Description":
-                widget.destroy()
-
-        # Create a Toplevel window for the description
-        description_window = tk.Toplevel(self)
-        description_window.title("GoodHeart Description")
-
-        # Set the geometry of the description window
-        description_window_width = 400
-        description_window_height = 200
-        x_coordinate = self.winfo_x() + 100
-        y_coordinate = self.winfo_y() + 100
-
-        description_window.geometry(
-            f"{description_window_width}x{description_window_height}+{x_coordinate}+{y_coordinate}")
-
-        # Label with the description text for the selected attribute
-        description_label = tk.Label(description_window, text=description,
-                                     wraplength=280)
-        description_label.config(font=("TkDefaultFont", 12))
-        description_label.config(foreground="#F27A79")
-        description_label.pack(pady=20)
-
-        # Button to close the popup window
-        close_button = tk.Button(description_window, text="Quit", command=description_window.destroy)
-        close_button.pack(pady=10, side="bottom")
-
     def init_advance_graph_tab(self):
-        """This function can be expanded for additional content on the home page"""
-        label = ttk.Label(self.graph_tab,
-                          text="WIP: Graph Page, see other tabs for content.")
-        label.pack()
+        """This function initializes the graph tab:
+        let user create their own interesting in any attributes."""
+        # Create a frame for visual separation
+        adv_separator_frame = tk.Frame(self.graph_tab, height=10)
+        adv_separator_frame.grid(row=1, column=0, columnspan=7, sticky="ew")
+
+        # Create another frame for the graph canvas
+        self.__graph_canvas_frame = tk.Frame(self.graph_tab, width=1020,
+                                             height=400)
+        self.__graph_canvas_frame.grid(row=4, column=0, columnspan=7,
+                                       sticky="nsew")
+
+        # Create the menu box for the 1st attribute
+        adv_attr1_label = ttk.Label(self.graph_tab,
+                                    text="Select 1st Attribute:")
+        adv_attr1_label.grid(row=0, column=0, padx=5, pady=5, sticky="w")
+
+        self.adv_attr1_combobox = ttk.Combobox(self.graph_tab,
+                                               values=["Attribute 1",
+                                                       "Attribute 2",
+                                                       "Attribute 3"])
+        self.adv_attr1_combobox.grid(row=0, column=1, padx=5, pady=5,
+                                     sticky="w")
+
+        # Create the menu box for the 2nd attribute
+        adv_attr2_label = ttk.Label(self.graph_tab,
+                                    text="Select 2nd Attribute:")
+        adv_attr2_label.grid(row=0, column=2, padx=5, pady=5, sticky="w")
+
+        self.adv_attr2_combobox = ttk.Combobox(self.graph_tab,
+                                               values=["Attribute 1",
+                                                       "Attribute 2",
+                                                       "Attribute 3"])
+        self.adv_attr2_combobox.grid(row=0, column=3, padx=5, pady=5,
+                                     sticky="w")
+
+        # Create labels for attribute range sliders
+        adv_left_range_label = ttk.Label(self.graph_tab,
+                                         text="Select Range for 1st attribute:")
+        adv_left_range_label.grid(row=2, column=0, padx=5, pady=5, sticky="w")
+
+        adv_right_range_label = ttk.Label(self.graph_tab,
+                                          text="Select Range for 2nd attribute:")
+        adv_right_range_label.grid(row=2, column=2, padx=5, pady=5, sticky="w")
+
+        # Create range sliders for attribute selection
+        self.adv_left_range_slider = ttk.Scale(self.graph_tab, from_=0, to=100,
+                                               length=200,
+                                               command=self.update_left_slider_value)
+        self.adv_left_range_slider.grid(row=2, column=1, padx=5, pady=5,
+                                        sticky="w")
+
+        self.adv_right_range_slider = ttk.Scale(self.graph_tab, from_=0,
+                                                to=100, length=200,
+                                                command=self.update_right_slider_value)
+        self.adv_right_range_slider.grid(row=2, column=3, padx=5, pady=5,
+                                         sticky="w")
+
+        # Create labels to display current range slider values
+        self.adv_left_range_value_label = ttk.Label(self.graph_tab, text="0")
+        self.adv_left_range_value_label.grid(row=2, column=1, padx=5, pady=5,
+                                             sticky="w")
+
+        self.adv_right_range_value_label = ttk.Label(self.graph_tab, text="0")
+        self.adv_right_range_value_label.grid(row=2, column=3, padx=5, pady=5,
+                                              sticky="w")
+
+        # Button to clear range
+        clear_button = ttk.Button(self.graph_tab, text="Clear Range",
+                                  command=self.clear_range)
+        clear_button.grid(row=3, column=0, columnspan=2, padx=5, pady=5,
+                          sticky="w")
+
+        # Create check button to enable attribute selection
+        self.adv_check_var = tk.BooleanVar()
+        adv_check_button = ttk.Checkbutton(self.graph_tab,
+                                           variable=self.adv_check_var,
+                                           command=self.toggle_attribute_selection)
+        adv_check_button.grid(row=1, column=1, padx=5, pady=5, sticky="w")
+        #
+        self.adv_check_var = tk.BooleanVar()
+        # adv_check_button = ttk.Checkbutton(self.graph_tab,
+        #                                    variable=self.adv_check_var,
+        #                                    command=self.toggle_attribute_selection)
+        # adv_check_button.grid(row=1, column=1, padx=5, pady=5, sticky="w")
+
+        # Initially disable range sliders
+        self.toggle_attribute_selection()
+
+    def clear_range(self):
+        """Function to clear the range sliders"""
+        self.adv_left_range_slider.set(0)
+        self.adv_right_range_slider.set(0)
+
+    def toggle_attribute_selection(self):
+        """Enable or disable attribute selection based on the checkbox state"""
+        state = "normal" if self.adv_check_var.get() else "disabled"
+        self.adv_left_range_slider.config(state=state)
+        self.adv_right_range_slider.config(state=state)
+        # Show or hide range slider value labels based on the checkbox state
+        self.adv_left_range_value_label.grid(row=2, column=1, padx=1, pady=1,
+                                             sticky="w")
+        self.adv_right_range_value_label.grid(row=2, column=3, padx=1, pady=1,
+                                              sticky="w")
+
+    def update_left_slider_value(self, value):
+        """Update the label to display the current value of the left range slider"""
+        self.adv_left_range_value_label.config(text=str(round(float(value))))
+
+    def update_right_slider_value(self, value):
+        """Update the label to display the current value of the right range slider"""
+        self.adv_right_range_value_label.config(text=str(round(float(value))))
+
+    def plot_graph(self):
+        """Function to plot the graph based on selected attributes and ranges"""
+        # Implement your graph plotting logic here using the selected attributes and ranges
+        pass
 
     def run(self):
         self.mainloop()
