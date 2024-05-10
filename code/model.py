@@ -2,6 +2,8 @@
 **This should be model of data structure.**"""
 
 from tkinter import messagebox
+
+import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib
 import matplotlib.pyplot as plt
@@ -265,7 +267,11 @@ class PlotGraphs:
         # Plot scatter plot of the two attributes
         sns.scatterplot(data=filtered_df, x=attb1, y=attb2, ax=ax)
 
-        plt.title(f"Scatter Plot for {attb1} and {attb2}")
+        correlation_coefficient = np.corrcoef(filtered_df[attb1], filtered_df[attb2])[0, 1]
+
+        # Add coefficient to the plot title
+        plt.title(
+            f"Scatter Plot for {attb1} and {attb2} (Correlation: {correlation_coefficient:.2f})")
         plt.xlabel(attb1)
         plt.ylabel(attb2)
 
