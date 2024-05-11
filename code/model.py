@@ -314,7 +314,7 @@ class PlotGraphs:
         grouped_data = filtered_df.groupby([attb1, attb2]).size().unstack()
 
         # Plot stacked bar graph
-        ax = grouped_data.plot(kind='bar', stacked=True, figsize=(8, 5))
+        ax = grouped_data.plot(kind='bar', stacked=True, figsize=(8, 4))
 
         # Set labels and title
         plt.title(f"Stacked Bar Graph for {attb1} and {attb2}")
@@ -328,7 +328,7 @@ class PlotGraphs:
         # Embed the plot into the tkinter frame
         canvas = FigureCanvasTkAgg(plt.gcf(), master=parent_frame)
         canvas.draw()
-        canvas.get_tk_widget().pack(side="bottom")
+        canvas.get_tk_widget().pack(side="top")
         return canvas.get_tk_widget()
 
     def plot_line_graph(self, attb1, attb2, range_attb1, range_attb2, parent_frame) -> tk.Widget:

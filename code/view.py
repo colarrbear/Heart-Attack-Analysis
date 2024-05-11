@@ -9,9 +9,8 @@ from PIL import Image, ImageTk
 class HeartDiseaseView(tk.Tk):
     def __init__(self, controller):
         super().__init__()
-        self.controller = controller
         self.data_loader = controller.data
-        self.plotter = PlotGraphs(self.data_loader)
+        self.plotter = controller
         self.title("GoodHeart")
         self.init_components()
         self.create_quit_button()
@@ -280,7 +279,7 @@ class HeartDiseaseView(tk.Tk):
         Handle the selection of an attribute in
         the combobox of the Data Information tab.
         """
-        data_info = self.controller.summary_statistics()[selected_attribute]
+        data_info = self.plotter.summary_statistics()[selected_attribute]
         self.data_info_update_data_information_tab(data_info)
 
     def data_info_update_data_information_tab(self, selected_atb):
@@ -362,8 +361,7 @@ class HeartDiseaseView(tk.Tk):
 
         # If the selected visualization is "Bar Charts",
         # fetch the right attribute
-        if (self.__selected == "Bar Charts" or
-                self.__selected == "Stack Bar graph"):
+        if self.__selected == "Bar Charts":
             right = self.right_attribute_combobox.get()
 
         # Clear the existing graph canvas
@@ -578,6 +576,7 @@ class HeartDiseaseView(tk.Tk):
                                          self.graph_validate_comboboxes)
 
         elif graph_selected_graph == "Stack Bar Graph":
+            self.adv_attr2_combobox.set("")
             allow_atb = ['sex', 'fbs', 'restecg', 'exng', 'output', 'slp', 'caa', 'thall']
             self.adv_attr1_combobox['values'] = allow_atb
             self.adv_attr1_combobox.set(allow_atb[0])
@@ -588,6 +587,7 @@ class HeartDiseaseView(tk.Tk):
                                          self.graph_validate_comboboxes)
 
         elif graph_selected_graph == "Line Graph":  # only allow numerical value
+            self.adv_attr2_combobox.set("")
             allow_atb = ['sex', 'fbs', 'restecg', 'exng', 'slp', 'caa', 'thall',]
             self.adv_attr1_combobox['values'] = 'age'
             self.adv_attr1_combobox.set(allow_atb[0])
@@ -639,7 +639,7 @@ class HeartDiseaseView(tk.Tk):
     def update_left_slider_value(self, event):
         """Update the label to display the current value of the left range slider"""
         selected_attribute = self.adv_attr1_combobox.get()
-        max_value = self.controller.get_max_value(selected_attribute)
+        max_value = self.plotter.get_max_value(selected_attribute)
         self.adv_left_range_slider.config(to=max_value)
         self.adv_left_range_value_label.config(
             text=str(self.adv_left_range_slider.get()))
@@ -647,7 +647,7 @@ class HeartDiseaseView(tk.Tk):
     def update_right_slider_value(self, event):
         """Update the label to display the current value of the right range slider"""
         selected_attribute = self.adv_attr2_combobox.get()
-        max_value = self.controller.get_max_value(selected_attribute)
+        max_value = self.plotter.get_max_value(selected_attribute)
         self.adv_right_range_slider.config(to=max_value)
         self.adv_right_range_value_label.config(
             text=str(self.adv_right_range_slider.get()))
