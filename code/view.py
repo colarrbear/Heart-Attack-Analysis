@@ -61,8 +61,8 @@ class HeartDiseaseView(tk.Tk):
         # text to explain this page is showing trend of happening heart attack
         # based on the data.
         data_storytelling_text = (
-            "This page depicts the trend of heart attack occurrences based on age and sex. \n"
-            "Analysis reveals that, on average, males tend to experience fewer heart attacks \n"
+            "This page depicts the trend of Resting blood pressure based on age and sex. \n"
+            "Analysis reveals that, on average, males tend to experience higher RBP \n"
             "compared to females across various age groups.")
         data_storytelling_label = ttk.Label(self.data_storytelling_tab,
                                             text=data_storytelling_text,
