@@ -183,12 +183,27 @@ class PlotGraphs:
 
             # Determine the maximum range value for the x-axis
             max_range_value = max(range_attb1, range_attb2)
+            # if data does not exist in the range, return
+            if filtered_df.empty:
+                messagebox.showerror("Error",
+                                     "No data exists in the specified range.")
+                return
         elif range_attb1:
             filtered_df = df[df[attb1] <= range_attb1]
             max_range_value = range_attb1
+            # if data does not exist in the range, return
+            if filtered_df.empty:
+                messagebox.showerror("Error",
+                                     "No data exists in the specified range.")
+                return
         elif range_attb2:
             filtered_df = df[df[attb2] <= range_attb2]
             max_range_value = range_attb2
+            # if data does not exist in the range, return
+            if filtered_df.empty:
+                messagebox.showerror("Error",
+                                     "No data exists in the specified range.")
+                return
         else:
             # If no range is specified, use the entire DataFrame
             filtered_df = df
@@ -239,12 +254,27 @@ class PlotGraphs:
                 (df[attb1] <= range_attb1) & (df[attb2] <= range_attb2)]
             # Determine the maximum range value for the x-axis
             max_range_value = max(range_attb1, range_attb2)
+            # if data does not exist in the range, return
+            if filtered_df.empty:
+                messagebox.showerror("Error",
+                                     "No data exists in the specified range.")
+                return
         elif range_attb1:
             filtered_df = df[df[attb1] <= range_attb1]
             max_range_value = range_attb1
+            # if data does not exist in the range, return
+            if filtered_df.empty:
+                messagebox.showerror("Error",
+                                     "No data exists in the specified range.")
+                return
         elif range_attb2:
             filtered_df = df[df[attb2] <= range_attb2]
             max_range_value = range_attb2
+            # if data does not exist in the range, return
+            if filtered_df.empty:
+                messagebox.showerror("Error",
+                                     "No data exists in the specified range.")
+                return
         else:
             # If no range is specified, use the entire DataFrame
             filtered_df = df
@@ -274,7 +304,7 @@ class PlotGraphs:
         canvas.get_tk_widget().pack(side="bottom")
         return canvas.get_tk_widget()
 
-    def plot_stack_bar_graph(self, attb1, attb2, parent_frame) -> tk.Widget:
+    def plot_stack_bar_graph(self, attb1, attb2, range_attb1, range_attb2, parent_frame) -> tk.Widget:
         """for plotting possibility of heart attack based on age and sex"""
 
         if not attb1:
@@ -286,11 +316,67 @@ class PlotGraphs:
                                  "Select an attribute for the right combobox.")
             return
 
+        # sns.set_theme()  # Set seaborn style
+        # df = self.data.load_data
+        #
+        # # Group data by 'attb1' and 'attb2' and calculate the count of occurrences
+        # grouped_data = df.groupby([attb1, attb2]).size().unstack()
+        #
+        # # Plot stacked bar graph
+        # ax = grouped_data.plot(kind='bar', stacked=True, figsize=(8, 5))
+        #
+        # # Set labels and title
+        # plt.title(f"Stacked Bar Graph for {attb1} and {attb2}")
+        # plt.xlabel(attb1)
+        # plt.ylabel("Count")
+        # plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+        #
+        # # plt.show()
+        # canvas = FigureCanvasTkAgg(plt.gcf(), master=parent_frame)
+        # canvas.draw()
+        # canvas.get_tk_widget().pack(side="bottom")
+        # return canvas.get_tk_widget()
+
         sns.set_theme()  # Set seaborn style
         df = self.data.load_data
 
+        if range_attb1 and range_attb2:
+            # Filter data based on specified ranges
+            filtered_df = df[
+                (df[attb1] <= range_attb1) & (df[attb2] <= range_attb2)]
+
+            # Determine the maximum range value for the x-axis
+            max_range_value = max(range_attb1, range_attb2)
+            # if data does not exist in the range, return
+            if filtered_df.empty:
+                messagebox.showerror("Error",
+                                     "No data exists in the specified range.")
+                return
+        elif range_attb1:
+            filtered_df = df[df[attb1] <= range_attb1]
+            max_range_value = range_attb1
+
+            # if data does not exist in the range, return
+            if filtered_df.empty:
+                messagebox.showerror("Error",
+                                     "No data exists in the specified range.")
+                return
+        elif range_attb2:
+            filtered_df = df[df[attb2] <= range_attb2]
+            max_range_value = range_attb2
+
+            # if data does not exist in the range, return
+            if filtered_df.empty:
+                messagebox.showerror("Error",
+                                     "No data exists in the specified range.")
+                return
+        else:
+            # If no range is specified, use the entire DataFrame
+            filtered_df = df
+            max_range_value = None
+
         # Group data by 'attb1' and 'attb2' and calculate the count of occurrences
-        grouped_data = df.groupby([attb1, attb2]).size().unstack()
+        grouped_data = filtered_df.groupby([attb1, attb2]).size().unstack()
 
         # Plot stacked bar graph
         ax = grouped_data.plot(kind='bar', stacked=True, figsize=(8, 5))
@@ -306,7 +392,6 @@ class PlotGraphs:
         canvas.draw()
         canvas.get_tk_widget().pack(side="bottom")
         return canvas.get_tk_widget()
-
 
     def plot_line_data_storytelling(self, parent_frame):
         """Plot the trend of heart attacks"""
