@@ -316,27 +316,6 @@ class PlotGraphs:
                                  "Select an attribute for the right combobox.")
             return
 
-        # sns.set_theme()  # Set seaborn style
-        # df = self.data.load_data
-        #
-        # # Group data by 'attb1' and 'attb2' and calculate the count of occurrences
-        # grouped_data = df.groupby([attb1, attb2]).size().unstack()
-        #
-        # # Plot stacked bar graph
-        # ax = grouped_data.plot(kind='bar', stacked=True, figsize=(8, 5))
-        #
-        # # Set labels and title
-        # plt.title(f"Stacked Bar Graph for {attb1} and {attb2}")
-        # plt.xlabel(attb1)
-        # plt.ylabel("Count")
-        # plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-        #
-        # # plt.show()
-        # canvas = FigureCanvasTkAgg(plt.gcf(), master=parent_frame)
-        # canvas.draw()
-        # canvas.get_tk_widget().pack(side="bottom")
-        # return canvas.get_tk_widget()
-
         sns.set_theme()  # Set seaborn style
         df = self.data.load_data
 

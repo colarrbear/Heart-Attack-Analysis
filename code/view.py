@@ -319,11 +319,6 @@ class HeartDiseaseView(tk.Tk):
 
         menu_var = tk.StringVar()
         menu_var.set("Select Visualization")
-        # menu_combobox = ttk.Combobox(self.statistics_tab,
-        #                              textvariable=menu_var,
-        #                              values=["Bar Charts", "Histogram",
-        #                                      "Correlations",
-        #                                      "Stack Bar graph"])
         menu_combobox = ttk.Combobox(self.statistics_tab,
                                      textvariable=menu_var,
                                      values=["Bar Charts", "Histogram",
@@ -383,9 +378,6 @@ class HeartDiseaseView(tk.Tk):
         elif self.__selected == "Correlations":
             self.disable_comboboxes()
             self.plotter.plot_correlation(self.stat_graph_canvas_frame)
-        # elif self.__selected == "Stack Bar graph":
-        #     self.plotter.plot_stack_bar_graph(left, right,
-        #                                       self.stat_graph_canvas_frame)
 
     def stat_handle_menu_selection(self, event):
         """Handle the selection of a visualization in the Statistics tab."""
@@ -399,42 +391,6 @@ class HeartDiseaseView(tk.Tk):
             column = self.data_loader.get_column_names
             self.left_attribute_combobox["values"] = column
             self.left_attribute_combobox.set(column[0])
-
-        # elif selected == "Stack Bar graph":
-        #     self.enable_comboboxes()
-        #
-        #     column = self.data_loader.get_column_names
-        #     # if numerical, use range instead
-        #     numerical_columns = ['age', 'trtbps', 'thalachh', 'oldpeak', 'caa', 'thall']
-        #
-        #     # Clear the values of comboboxes
-        #     self.left_attribute_combobox["values"] = ()
-        #     self.right_attribute_combobox["values"] = ()
-        #
-        #     if self.left_attribute_combobox.get() not in numerical_columns:
-        #         # If left attribute is not numerical, add all columns to the comboboxes
-        #         self.left_attribute_combobox["values"] = column
-        #         self.right_attribute_combobox["values"] = column
-        #     else:
-        #         # If left attribute is numerical, enable range selection
-        #         self.enable_range_selection()
-        #
-        #         # Set default values for comboboxes
-        #     self.left_attribute_combobox.set(column[0])
-        #     self.right_attribute_combobox.set(column[1])
-        #
-        #     # Bind events for combobox selection
-        #     self.left_attribute_combobox.bind("<<ComboboxSelected>>", self.validate_comboboxes)
-        #     self.right_attribute_combobox.bind("<<ComboboxSelected>>", self.validate_comboboxes)
-
-            # column = self.data_loader.get_column_names
-            # self.left_attribute_combobox["values"] = column
-            # self.left_attribute_combobox.set(column[0])
-            # self.left_attribute_combobox.bind("<<ComboboxSelected>>",
-            #                                   self.validate_comboboxes)
-            # self.right_attribute_combobox["values"] = column
-            # self.right_attribute_combobox.bind("<<ComboboxSelected>>",
-            #                                    self.validate_comboboxes)
 
         if selected == "Bar Charts":
             self.enable_comboboxes()
