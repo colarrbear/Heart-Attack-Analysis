@@ -301,7 +301,12 @@ class PlotGraphs:
         plt.ylabel("Count")
         plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
-        plt.show()
+        # plt.show()
+        canvas = FigureCanvasTkAgg(plt.gcf(), master=parent_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side="bottom")
+        return canvas.get_tk_widget()
+
 
     def plot_line_data_storytelling(self, parent_frame):
         """Plot the trend of heart attacks"""
