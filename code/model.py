@@ -197,6 +197,16 @@ class PlotGraphs:
             filtered_df = df
             max_range_value = None
 
+        # Check if filtered data exists
+        if filtered_df.empty:
+            messagebox.showerror("Error", "No data exists in the specified range.")
+            return
+
+        # if data has 0 varience:
+        if filtered_df[attb1].var() == 0 or filtered_df[attb2].var() == 0:
+            messagebox.showerror("Error", "Data has 0 varience.")
+            return
+
         fig, ax = plt.subplots(figsize=(6, 4))
 
         # Plot distribution of attribute 1
@@ -256,6 +266,16 @@ class PlotGraphs:
             filtered_df = df
             max_range_value = None
 
+        # Check if filtered data exists
+        if filtered_df.empty:
+            messagebox.showerror("Error", "No data exists in the specified range.")
+            return
+
+        # if data has 0 varience:
+        if filtered_df[attb1].var() == 0 or filtered_df[attb2].var() == 0:
+            messagebox.showerror("Error", "Data has 0 varience.")
+            return
+
         fig, ax = plt.subplots(figsize=(6, 4))
 
         # Plot scatter plot of the two attributes
@@ -310,6 +330,11 @@ class PlotGraphs:
             messagebox.showerror("Error", "No data exists in the specified range.")
             return
 
+        # if data has 0 varience:
+        if filtered_df[attb1].var() == 0 or filtered_df[attb2].var() == 0:
+            messagebox.showerror("Error", "Data has 0 varience.")
+            return
+
         # Group data by 'attb1' and 'attb2' and calculate the count of occurrences
         grouped_data = filtered_df.groupby([attb1, attb2]).size().unstack()
 
@@ -359,6 +384,11 @@ class PlotGraphs:
         # Check if filtered data exists
         if filtered_df.empty:
             messagebox.showerror("Error", "No data exists in the specified range.")
+            return
+
+        # if data has 0 varience:
+        if filtered_df[attb1].var() == 0 or filtered_df[attb2].var() == 0:
+            messagebox.showerror("Error", "Data has 0 varience.")
             return
 
         # Group data by 'attb1' and 'attb2' and calculate the mean
