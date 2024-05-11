@@ -391,19 +391,19 @@ class PlotGraphs:
 
         # Group the data by age, sex, and output (e.g., heart attack)
         grouped_data = data.groupby(['age', 'sex'])[
-            'output'].mean().reset_index()
+            'trtbps'].mean().reset_index()
 
         # Pivot the data to create a matrix with age as rows,
-        # sex as columns, and average output as values
+        # sex as columns, and average resting blood pressure as values
         pivot_data = grouped_data.pivot(index='age', columns='sex',
-                                        values='output')
+                                        values='trtbps')
 
         plt.figure(figsize=(8, 5))
         sns.lineplot(data=pivot_data, dashes=False, hue_order=[0, 1],
                      palette={0: "#F27A79", 1: "#5A60A5"})
-        plt.title('Trend of Heart Attacks by Age and Sex')
+        plt.title('Trend of Resting Blood pressure by Age and Sex')
         plt.xlabel('Age')
-        plt.ylabel('Heart Attack Occurrence (Output)')
+        plt.ylabel('Resting Blood pressure (in mmHg)')
         plt.legend(title='Sex', loc='upper right')
 
         plt.grid(True)

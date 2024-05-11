@@ -153,7 +153,7 @@ class HeartDiseaseView(tk.Tk):
                     "1 = yes"
                     "\n0 = no",
             "oldpeak": "ST depression induced by exercise relative to rest",
-            "slope": "The slope of the peak exercise ST segment\n"
+            "slp": "The slope of the peak exercise ST segment\n"
                      "Value 1: upsloping\n"
                      "Value 2: flat\n"
                      "Value 3: downsloping",
