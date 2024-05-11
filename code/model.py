@@ -313,9 +313,6 @@ class PlotGraphs:
         # Group data by 'attb1' and 'attb2' and calculate the count of occurrences
         grouped_data = filtered_df.groupby([attb1, attb2]).size().unstack()
 
-        # Calculate padding for x-axis
-        # x_padding = 0.1 * max_range_value
-
         # Plot stacked bar graph
         ax = grouped_data.plot(kind='bar', stacked=True, figsize=(8, 5))
 
@@ -326,8 +323,6 @@ class PlotGraphs:
         plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
         # Set maximum value for x-axis
-        # if max_range_value is not None:
-        #     plt.xlim(right=max_range_value + x_padding)
         ax.set_xlim(left=min(grouped_data.index), right=max(grouped_data.index) + 1)
 
         # Embed the plot into the tkinter frame
