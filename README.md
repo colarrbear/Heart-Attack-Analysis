@@ -1,6 +1,10 @@
 # Heart-Attack-Analysis
 This project is an interactive Python GUI application using Tkinter to visualize, analyze, and gain insights from heart disease data, adhering to object-oriented design principles and allowing user interaction to explore the data.
 
+## Application UI
+
+![](https://github.com/colarrbear/Heart-Attack-Analysis/blob/d6bacca7c9067ac3885cbc1a0c4f40b8f19a6da7/screenshots/UI.gif)
+
 ## Running the Application
 
 ### Requirements
