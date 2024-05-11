@@ -183,27 +183,15 @@ class PlotGraphs:
 
             # Determine the maximum range value for the x-axis
             max_range_value = max(range_attb1, range_attb2)
-            # if data does not exist in the range, return
-            if filtered_df.empty:
-                messagebox.showerror("Error",
-                                     "No data exists in the specified range.")
-                return
+
         elif range_attb1:
             filtered_df = df[df[attb1] <= range_attb1]
             max_range_value = range_attb1
-            # if data does not exist in the range, return
-            if filtered_df.empty:
-                messagebox.showerror("Error",
-                                     "No data exists in the specified range.")
-                return
+
         elif range_attb2:
             filtered_df = df[df[attb2] <= range_attb2]
             max_range_value = range_attb2
-            # if data does not exist in the range, return
-            if filtered_df.empty:
-                messagebox.showerror("Error",
-                                     "No data exists in the specified range.")
-                return
+
         else:
             # If no range is specified, use the entire DataFrame
             filtered_df = df
@@ -254,27 +242,15 @@ class PlotGraphs:
                 (df[attb1] <= range_attb1) & (df[attb2] <= range_attb2)]
             # Determine the maximum range value for the x-axis
             max_range_value = max(range_attb1, range_attb2)
-            # if data does not exist in the range, return
-            if filtered_df.empty:
-                messagebox.showerror("Error",
-                                     "No data exists in the specified range.")
-                return
+
         elif range_attb1:
             filtered_df = df[df[attb1] <= range_attb1]
             max_range_value = range_attb1
-            # if data does not exist in the range, return
-            if filtered_df.empty:
-                messagebox.showerror("Error",
-                                     "No data exists in the specified range.")
-                return
+
         elif range_attb2:
             filtered_df = df[df[attb2] <= range_attb2]
             max_range_value = range_attb2
-            # if data does not exist in the range, return
-            if filtered_df.empty:
-                messagebox.showerror("Error",
-                                     "No data exists in the specified range.")
-                return
+
         else:
             # If no range is specified, use the entire DataFrame
             filtered_df = df
@@ -306,56 +282,39 @@ class PlotGraphs:
 
     def plot_stack_bar_graph(self, attb1, attb2, range_attb1, range_attb2, parent_frame) -> tk.Widget:
         """for plotting possibility of heart attack based on age and sex"""
-
+        # Check if attributes are selected
         if not attb1:
-            messagebox.showerror("Error",
-                                 "Select an attribute for the left combobox.")
+            messagebox.showerror("Error", "Select an attribute for the left combobox.")
             return
         elif not attb2:
-            messagebox.showerror("Error",
-                                 "Select an attribute for the right combobox.")
+            messagebox.showerror("Error", "Select an attribute for the right combobox.")
             return
 
-        sns.set_theme()  # Set seaborn style
+        # Filter data based on specified ranges
         df = self.data.load_data
-
         if range_attb1 and range_attb2:
-            # Filter data based on specified ranges
-            filtered_df = df[
-                (df[attb1] <= range_attb1) & (df[attb2] <= range_attb2)]
-
-            # Determine the maximum range value for the x-axis
+            filtered_df = df[(df[attb1] <= range_attb1) & (df[attb2] <= range_attb2)]
             max_range_value = max(range_attb1, range_attb2)
-            # if data does not exist in the range, return
-            if filtered_df.empty:
-                messagebox.showerror("Error",
-                                     "No data exists in the specified range.")
-                return
         elif range_attb1:
             filtered_df = df[df[attb1] <= range_attb1]
             max_range_value = range_attb1
-
-            # if data does not exist in the range, return
-            if filtered_df.empty:
-                messagebox.showerror("Error",
-                                     "No data exists in the specified range.")
-                return
         elif range_attb2:
             filtered_df = df[df[attb2] <= range_attb2]
             max_range_value = range_attb2
-
-            # if data does not exist in the range, return
-            if filtered_df.empty:
-                messagebox.showerror("Error",
-                                     "No data exists in the specified range.")
-                return
         else:
-            # If no range is specified, use the entire DataFrame
             filtered_df = df
             max_range_value = None
 
+        # Check if filtered data exists
+        if filtered_df.empty:
+            messagebox.showerror("Error", "No data exists in the specified range.")
+            return
+
         # Group data by 'attb1' and 'attb2' and calculate the count of occurrences
         grouped_data = filtered_df.groupby([attb1, attb2]).size().unstack()
+
+        # Calculate padding for x-axis
+        # x_padding = 0.1 * max_range_value
 
         # Plot stacked bar graph
         ax = grouped_data.plot(kind='bar', stacked=True, figsize=(8, 5))
@@ -366,11 +325,70 @@ class PlotGraphs:
         plt.ylabel("Count")
         plt.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 
-        # plt.show()
+        # Set maximum value for x-axis
+        # if max_range_value is not None:
+        #     plt.xlim(right=max_range_value + x_padding)
+        ax.set_xlim(left=min(grouped_data.index), right=max(grouped_data.index) + 1)
+
+        # Embed the plot into the tkinter frame
         canvas = FigureCanvasTkAgg(plt.gcf(), master=parent_frame)
         canvas.draw()
         canvas.get_tk_widget().pack(side="bottom")
         return canvas.get_tk_widget()
+
+    def plot_line_graph(self, attb1, attb2, range_attb1, range_attb2, parent_frame) -> tk.Widget:
+        """Plot trends of the given attributes within the specified ranges."""
+        # Check if attributes are selected
+        if not attb1:
+            messagebox.showerror("Error", "Select an attribute for the left combobox.")
+            return
+        elif not attb2:
+            messagebox.showerror("Error", "Select an attribute for the right combobox.")
+            return
+
+        # Filter data based on specified ranges
+        df = self.data.load_data
+        if range_attb1 and range_attb2:
+            filtered_df = df[(df[attb1] <= range_attb1) & (df[attb2] <= range_attb2)]
+            max_range_value = max(range_attb1, range_attb2)
+        elif range_attb1:
+            filtered_df = df[df[attb1] <= range_attb1]
+            max_range_value = range_attb1
+        elif range_attb2:
+            filtered_df = df[df[attb2] <= range_attb2]
+            max_range_value = range_attb2
+        else:
+            filtered_df = df
+            max_range_value = None
+
+        # Check if filtered data exists
+        if filtered_df.empty:
+            messagebox.showerror("Error", "No data exists in the specified range.")
+            return
+
+        # Group data by 'attb1' and 'attb2' and calculate the mean
+        grouped_data = filtered_df.groupby([attb1, attb2]).mean().reset_index()
+
+        # Pivot the data to create a matrix with 'attb1' as rows,
+        # 'attb2' as columns, and average values as values
+        pivot_data = grouped_data.pivot(index=attb1, columns=attb2, values='output')
+
+        # Plot line graph
+        plt.figure(figsize=(8, 5))
+        sns.lineplot(data=pivot_data, dashes=False)
+        plt.title(f"Trend of {attb1} and {attb2}")
+        plt.xlabel(attb1)
+        plt.ylabel(attb2)
+        plt.legend(title=attb2, loc='upper right')
+
+        # Set maximum value for x-axis
+        if max_range_value is not None:
+            plt.xlim(right=max_range_value)
+
+        # Embed the plot into the tkinter frame
+        canvas = FigureCanvasTkAgg(plt.gcf(), master=parent_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side="bottom")
 
     def plot_line_data_storytelling(self, parent_frame):
         """Plot the trend of heart attacks"""

@@ -322,7 +322,7 @@ class HeartDiseaseView(tk.Tk):
         menu_combobox = ttk.Combobox(self.statistics_tab,
                                      textvariable=menu_var,
                                      values=["Bar Charts", "Histogram",
-                                             "Correlations",])
+                                             "Correlations", ])
         menu_combobox.pack(side="top", fill="x", padx=5, pady=5)
         menu_combobox.bind("<<ComboboxSelected>>",
                            self.stat_handle_menu_selection)
@@ -407,7 +407,6 @@ class HeartDiseaseView(tk.Tk):
         elif selected == "Correlations":
             pass
 
-
     def enable_comboboxes(self):
         """Enable the comboboxes."""
         self.left_attribute_combobox["state"] = "normal"
@@ -469,7 +468,8 @@ class HeartDiseaseView(tk.Tk):
         self.graph_type_combobox = ttk.Combobox(self.adv_graph_tab,
                                                 values=["Distribution Graph",
                                                         "Scatter Plot",
-                                                        "Stack Bar Graph"])
+                                                        "Stack Bar Graph",
+                                                        "Line Graph"])
         self.graph_type_combobox.set("Distribution Graph")
         self.graph_type_combobox.grid(row=0, column=1, columnspan=1, padx=5,
                                       pady=5, sticky="ew")
@@ -565,7 +565,6 @@ class HeartDiseaseView(tk.Tk):
             self.adv_attr2_combobox.set("thalachh")
 
         elif graph_selected_graph == "Scatter Plot":
-            # scatter_attributes = ["chol", "exng", "trtbps", "thalachh", "caa"]
             scatter_attributes = ["chol", "exng", "trtbps", "thalachh", "caa",
                                   "age", "sex", "output"]
             self.adv_attr1_combobox["values"] = scatter_attributes
@@ -579,14 +578,27 @@ class HeartDiseaseView(tk.Tk):
                                          self.graph_validate_comboboxes)
 
         elif graph_selected_graph == "Stack Bar Graph":
-            column = self.data_loader.get_column_names
-            self.adv_attr1_combobox['values'] = column
-            self.adv_attr1_combobox.set(column[0])
+            allow_atb = ['sex', 'fbs', 'restecg', 'exng', 'output', 'slp', 'caa', 'thall']
+            self.adv_attr1_combobox['values'] = allow_atb
+            self.adv_attr1_combobox.set(allow_atb[0])
             self.adv_attr1_combobox.bind("<<ComboboxSelected>>",
-                                            self.graph_validate_comboboxes)
-            self.adv_attr2_combobox['values'] = column
+                                         self.graph_validate_comboboxes)
+            self.adv_attr2_combobox['values'] = allow_atb
             self.adv_attr2_combobox.bind("<<ComboboxSelected>>",
-                                            self.graph_validate_comboboxes)
+                                         self.graph_validate_comboboxes)
+
+        elif graph_selected_graph == "Line Graph":  # only allow numerical value
+            allow_atb = ['sex', 'fbs', 'restecg', 'exng', 'slp', 'caa', 'thall',]
+            self.adv_attr1_combobox['values'] = 'age'
+            self.adv_attr1_combobox.set(allow_atb[0])
+            self.adv_attr1_combobox.bind("<<ComboboxSelected>>",
+                                         self.graph_validate_comboboxes)
+            self.adv_attr2_combobox['values'] = allow_atb
+            self.adv_attr2_combobox.bind("<<ComboboxSelected>>",
+                                         self.graph_validate_comboboxes)
+        # if already figure exist, remove previous one first
+        for widget in self.graph_tab_graph_canvas_frame.winfo_children():
+            widget.destroy()
 
     def graph_validate_comboboxes(self, event):
         """Validate the selected attributes in the comboboxes."""
@@ -672,6 +684,11 @@ class HeartDiseaseView(tk.Tk):
                 self.plotter.plot_stack_bar_graph(selected_left, selected_right,
                                                   left_range, right_range,
                                                   self.graph_tab_graph_canvas_frame)
+            elif selected_graph == "Line Graph":
+                self.plotter.plot_line_graph(selected_left, selected_right,
+                                             left_range, right_range,
+                                             self.graph_tab_graph_canvas_frame)
+
         else:  # If checkbox is not checked
             # Plot the graph without considering range
             if selected_graph == "Distribution Graph":
@@ -685,6 +702,10 @@ class HeartDiseaseView(tk.Tk):
                 self.plotter.plot_stack_bar_graph(selected_left, selected_right,
                                                   None, None,
                                                   self.graph_tab_graph_canvas_frame)
+            elif selected_graph == "Line Graph":
+                self.plotter.plot_line_graph(selected_left, selected_right,
+                                             None, None,
+                                             self.graph_tab_graph_canvas_frame)
 
     def run(self):
         self.mainloop()
